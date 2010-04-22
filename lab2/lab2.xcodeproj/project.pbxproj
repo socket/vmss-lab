@@ -11,6 +11,7 @@
 		8DD76F6A0486A84900D96B5E /* lab2.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* lab2.1 */; };
 		B84B8F7811804E1200A1FC26 /* LogicInterpreter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B84B8F7711804E1200A1FC26 /* LogicInterpreter.cpp */; };
 		B84B8FC511806DF200A1FC26 /* LogicToken.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B84B8FC411806DF200A1FC26 /* LogicToken.cpp */; };
+		B84B900E1180758100A1FC26 /* LogicTokenFactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B84B900D1180758100A1FC26 /* LogicTokenFactory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -34,6 +35,8 @@
 		B84B8F87118060A800A1FC26 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		B84B8FC311806DF200A1FC26 /* LogicToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogicToken.h; sourceTree = "<group>"; };
 		B84B8FC411806DF200A1FC26 /* LogicToken.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogicToken.cpp; sourceTree = "<group>"; };
+		B84B900C1180758100A1FC26 /* LogicTokenFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogicTokenFactory.h; sourceTree = "<group>"; };
+		B84B900D1180758100A1FC26 /* LogicTokenFactory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogicTokenFactory.cpp; sourceTree = "<group>"; };
 		C6859E8B029090EE04C91782 /* lab2.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = lab2.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +70,8 @@
 				B84B8F87118060A800A1FC26 /* common.h */,
 				B84B8FC311806DF200A1FC26 /* LogicToken.h */,
 				B84B8FC411806DF200A1FC26 /* LogicToken.cpp */,
+				B84B900C1180758100A1FC26 /* LogicTokenFactory.h */,
+				B84B900D1180758100A1FC26 /* LogicTokenFactory.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -133,6 +138,7 @@
 				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
 				B84B8F7811804E1200A1FC26 /* LogicInterpreter.cpp in Sources */,
 				B84B8FC511806DF200A1FC26 /* LogicToken.cpp in Sources */,
+				B84B900E1180758100A1FC26 /* LogicTokenFactory.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
