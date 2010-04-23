@@ -30,6 +30,7 @@
 /* Begin PBXFileReference section */
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		8DD76F6C0486A84900D96B5E /* lab2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lab2; sourceTree = BUILT_PRODUCTS_DIR; };
+		B82FC0F311818F1600077E42 /* LogicTokenOperators.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogicTokenOperators.h; sourceTree = "<group>"; };
 		B84B8F7611804E1200A1FC26 /* LogicInterpreter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogicInterpreter.h; sourceTree = "<group>"; };
 		B84B8F7711804E1200A1FC26 /* LogicInterpreter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogicInterpreter.cpp; sourceTree = "<group>"; };
 		B84B8F87118060A800A1FC26 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 				B84B8FC411806DF200A1FC26 /* LogicToken.cpp */,
 				B84B900C1180758100A1FC26 /* LogicTokenFactory.h */,
 				B84B900D1180758100A1FC26 /* LogicTokenFactory.cpp */,
+				B82FC0F311818F1600077E42 /* LogicTokenOperators.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";

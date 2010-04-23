@@ -7,8 +7,9 @@ int main (int argc, char * const argv[]) {
   //  std::cout << "Hello, World!\n";
 
 	LogicInterpreter li;
-	li.processInput("x + y + z - a");
+	li.processInput("~ ! ( ! x || y ) && ! ! z || x");
 	li.printPostfix();
+	//li.eval();
 	
 	return 0;
 }
