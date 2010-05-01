@@ -11,32 +11,45 @@
 #include "Lexer.h"
 
 const char* token_strings[] = {
-		"TK_INT",
-		"TK_FLOAT",
-		"TK_LITERAL",
-		"TK_IDENT",
-		
-		// parenthesis
-		"TK_LPAR",
-		"TK_RPAR",
-		
-		//
-		"TK_DOT",
-		"TK_COLON",
-		"TK_SEMICOLON",
-		"TK_COMMA",
-		
-		// operators
-		"TK_PLUS",
-		"TK_MINUS",
-		"TK_MUL",
-		"TK_DIV",
-		
-		//
-		"TK_ASSIGN",
-		
-		"TK_EOF",
-		"TK_UNKNOWN"
+	"TK_INT",
+	"TK_FLOAT",
+	"TK_LITERAL",
+	"TK_IDENT",
+	
+	// parenthesis
+	"TK_LPAR",
+	"TK_RPAR",
+	
+	//
+	"TK_DOT",
+	"TK_COLON",
+	"TK_SEMICOLON",
+	"TK_COMMA",
+	
+	// operators
+	"TK_PLUS",
+	"TK_MINUS",
+	"TK_MUL",
+	"TK_DIV",
+	
+	//
+	"TK_ASSIGN",
+	
+	"TK_IF",
+	"TK_FUNCTION",
+	"TK_LOCAL",
+	"TK_WHILE",
+	"TK_DO",
+	"TK_THEN",
+	"TK_END",
+	"TK_ELSE",
+	"TK_VAR",
+	"TK_RETURN",
+	"TK_BREAK",
+	
+	"TK_EOF",
+	"TK_UNKNOWN",
+	"TK_QTY"
 };
 
 typedef enum {
