@@ -20,7 +20,9 @@ void Parser::init(LexToken *tokens) {
 	_curtk = tokens;
 }
 
-
+void Parser::throwError(const char* err, ...) {
+	printf("%s", err);
+}
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -117,6 +119,10 @@ ParseNode*  Parser::parseBlock() {
 }
 
 ParseNode* Parser::parseLastStatement() {
+	if ( acceptToken(TK_RETURN) || acceptToken(TK_BREAK) ) {
+		return createNode(PT_LASTSTATEMENT);
+	}
+	
 	return NULL;
 }
 
@@ -153,24 +159,54 @@ ParseNode* Parser::parseExpList() {
 ParseNode* Parser::parseExp() {
 	ParseNode *node = createNode(PT_EXP);
 	// ToDo
+	throwError("Not implemented");
+	
 	return node;
 }
 
-/*
-statement ::= var '=' exp | 
-functioncall |
-`while` exp `do` block `end` |
-`if` exp then `block` [else block] end |
-`function` funcname funcbody |
-`local` var ['=' exp]
-*/
+ParseNode* Parser::parseFuncName() {
+	throwError("Not implemented");	
+	return NULL;
+}
 
+ParseNode* Parser::parseFuncBody() {
+	throwError("Not implemented");
+	return NULL;
+}
+
+/*
+ statement ::= var '=' exp | 
+ functioncall |
+ `while` exp `do` block `end` |
+ `if` exp then `block` [else block] end |
+ `function` funcname funcbody |
+ `local` var ['=' exp]
+ */
 ParseNode* Parser::parseStatement() {
 	ParseNode *node = createNode(PT_STATEMENT);
 	
-	if ( acceptNode( PT_VAR, parseVar(), node ) ) {
+	if ( acceptToken(TK_VAR)) {
+		expectNode(PT_VAR, parseVar(), node);
 	}
-	else if ( acceptNode( PT_FUNCTIONCALL, parseFunctionCall(), node ) ) {
+	else if ( acceptNode( PT_FUNCTIONCALL, parseFunctionCall(), node ) ) { }
+	else if ( acceptToken(TK_WHILE) ) {
+		ParseNode *w = addNode(node, createNode(PT_WHILE));
+		expectNode(PT_EXP, parseExp(), w);
+		expectToken(TK_DO);
+		expectNode(PT_BLOCK, parseBlock(), w);
+		expectToken(TK_END);
+	}
+	else if ( acceptToken(TK_IF) ) {
+		ParseNode *w = addNode(node, createNode(PT_IF));
+		expectNode(PT_EXP, parseExp(), w);
+		expectToken(TK_THEN);
+		expectNode(PT_BLOCK, parseBlock(), w);
+		expectToken(TK_END);
+	}
+	else if ( acceptToken(TK_FUNCTION) ) {
+		ParseNode *w = addNode(node, createNode(PT_FUNCTION));
+		expectNode(PT_FUNCNAME, parseFuncName(), w);
+		expectNode(PT_FUNCBODY, parseFuncBody(), w);
 	}
 	else {
 		free( node );

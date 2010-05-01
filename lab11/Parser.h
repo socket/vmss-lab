@@ -20,7 +20,7 @@
 /* EBNF syntax form
  chunk ::= block
  block ::= {statement ';'} [laststatement ';']
- statement ::= var '=' exp | 
+ statement ::= 'var' var '=' exp | 
 							functioncall |
 							`while` exp `do` block `end` |
 							`if` exp then `block` [else block] end |
@@ -50,7 +50,12 @@ enum ParseTokenType {
 	PT_VAR,
 	PT_EXP,
 	PT_FUNCTIONCALL,
+	PT_FUNCTION,
 	PT_EXPLIST,
+	PT_WHILE,
+	PT_IF,
+	PT_FUNCNAME,
+	PT_FUNCBODY,
 	
 	PT_QTY
 };
@@ -113,7 +118,8 @@ public:
 	ParseNode*  parseExp();
 	ParseNode*  parseExpList();
 	ParseNode*  parseLastStatement();
-	
+	ParseNode*  parseFuncName();
+	ParseNode*  parseFuncBody();
 	
 public:
 	Parser();
