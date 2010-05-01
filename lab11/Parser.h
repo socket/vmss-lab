@@ -48,9 +48,9 @@ enum ParseTokenType {
 	PT_STATEMENT,
 	PT_LASTSTATEMENT,
 	PT_VAR,
-	PT_EXPR,
+	PT_EXP,
 	PT_FUNCTIONCALL,
-	PT_EXPRLIST,
+	PT_EXPLIST,
 	
 	PT_QTY
 };
@@ -112,6 +112,7 @@ public:
 
 	ParseNode*  parseExp();
 	ParseNode*  parseExpList();
+	ParseNode*  parseLastStatement();
 	
 	
 public:

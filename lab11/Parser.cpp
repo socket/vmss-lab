@@ -116,11 +116,15 @@ ParseNode*  Parser::parseBlock() {
 	return node;
 }
 
+ParseNode* Parser::parseLastStatement() {
+	return NULL;
+}
+
 ParseNode* Parser::parseVar() {
 	if ( acceptToken(TK_VAR) ) {
 		ParseNode *node = createNode(PT_VAR);
 		expectToken(TK_ASSIGN);
-		expectNode(PT_EXPR, parseExp(), node);
+		expectNode(PT_EXP, parseExp(), node);
 		
 		return node;
 	}
@@ -131,7 +135,7 @@ ParseNode* Parser::parseFunctionCall() {
 	if ( acceptToken(TK_VAR) ) {
 		ParseNode *node = createNode(PT_FUNCTIONCALL);
 		expectToken(TK_LPAR);
-		expectNode( PT_EXPRLIST, parseArgList(), node);
+		expectNode( PT_EXPLIST, parseExpList(), node);
 		expectToken(TK_RPAR);
 		return node;
 	}
@@ -139,10 +143,16 @@ ParseNode* Parser::parseFunctionCall() {
 }
 
 ParseNode* Parser::parseExpList() {
-	ParseNode *node = createNode(PT_EXPRLIST);
-	while ( acceptNode(PT_EXPR, parseExp(), node) ) {
+	ParseNode *node = createNode(PT_EXPLIST);
+	while ( acceptNode(PT_EXP, parseExp(), node) ) {
 		expectToken(TK_COMMA);		// ToDo!
 	}
+	return node;
+}
+
+ParseNode* Parser::parseExp() {
+	ParseNode *node = createNode(PT_EXP);
+	// ToDo
 	return node;
 }
 
