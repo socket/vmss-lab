@@ -56,13 +56,26 @@ enum ParseTokenType {
 	PT_IF,
 	PT_FUNCNAME,
 	PT_FUNCBODY,
+	PT_OPERATOR,
 	
 	PT_QTY
 };
 
 struct ParseNode;
+
+struct OperatorPrecendence {
+	OperatorPrecendence(bool precendence_, bool unary_) : precendence(precendence_), left_assoc(true), unary(unary_), valid(true) {}
+	
+	int					precendence;
+	bool				left_assoc;
+	bool				unary;
+	bool				valid;
+};
+
 struct ParseNode {
 	ParseTokenType					type;
+	LexToken							 *lextoken;
+	int											v;
 	std::vector<ParseNode*>	children;
 };
 
@@ -80,10 +93,13 @@ class Parser {
 	ParseNode		*_topNode;
 	ParseNode		*_curNode;
 	
+	static OperatorPrecendence *_opTable;
+	static void initOperatorTable();
+	
 private: 
 	// error handling
 	void throwError(const char* err, ...);
-	
+		
 private:
 	// returns current node
 	ParseNode*	getNode();

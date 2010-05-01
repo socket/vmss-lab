@@ -9,7 +9,12 @@
 
 #include "Parser.h"
 
+OperatorPrecendence *Parser::_opTable = NULL;
+
 Parser::Parser() {
+	if ( !_opTable ) {
+		initOperatorTable(); 
+	}
 	_tokens = NULL;
 	_curtk = NULL;
 }
@@ -23,6 +28,18 @@ void Parser::init(LexToken *tokens) {
 void Parser::throwError(const char* err, ...) {
 	printf("%s", err);
 }
+
+void Parser::initOperatorTable() {
+	_opTable = (OperatorPrecendence*)calloc(TK_QTY, sizeof(OperatorPrecendence));
+	assert( _opTable );
+	memset(_opTable, 0, sizeof(OperatorPrecendence)*TK_QTY);
+	
+	_opTable[TK_PLUS] = OperatorPrecendence(1, true);
+	_opTable[TK_MINUS] = OperatorPrecendence(1, true);
+	_opTable[TK_MUL] = OperatorPrecendence(1, true);
+	_opTable[TK_DIV] = OperatorPrecendence(1, true);
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 
@@ -129,6 +146,8 @@ ParseNode* Parser::parseLastStatement() {
 ParseNode* Parser::parseVar() {
 	if ( acceptToken(TK_VAR) ) {
 		ParseNode *node = createNode(PT_VAR);
+		expectToken(TK_IDENT);
+		node->lextoken = _curtk-1;
 		expectToken(TK_ASSIGN);
 		expectNode(PT_EXP, parseExp(), node);
 		
@@ -138,8 +157,9 @@ ParseNode* Parser::parseVar() {
 }
 
 ParseNode* Parser::parseFunctionCall() {
-	if ( acceptToken(TK_VAR) ) {
+	if ( acceptToken(TK_IDENT) ) {
 		ParseNode *node = createNode(PT_FUNCTIONCALL);
+		node->lextoken = _curtk-1;
 		expectToken(TK_LPAR);
 		expectNode( PT_EXPLIST, parseExpList(), node);
 		expectToken(TK_RPAR);
@@ -157,11 +177,98 @@ ParseNode* Parser::parseExpList() {
 }
 
 ParseNode* Parser::parseExp() {
-	ParseNode *node = createNode(PT_EXP);
-	// ToDo
-	throwError("Not implemented");
+	bool unary = false;
 	
-	return node;
+	ParseNode *node = createNode(PT_EXP);
+	std::stack<LexToken*> op_stack;
+	
+	LexToken *tk_s = _curtk;
+	
+	while (_curtk) {
+		switch (_curtk->type) {
+			case TK_IDENT:
+				if ( (_curtk+1)->type == TK_LPAR ) { // function call 
+					expectNode(PT_FUNCTIONCALL, parseFunctionCall(), node);
+				} 
+				else {	// variable
+					expectNode(PT_VAR, parseVar(), node );
+				}
+				while (op_stack.size() > 0) {
+					LexToken *stack_top = op_stack.top();
+					if ( _opTable[stack_top->type].unary ) {
+						ParseNode *n = createNode(PT_OPERATOR);
+						n->lextoken = tk_s;
+						n->v = tk_s->type;
+						addNode(n, node);
+						
+						op_stack.pop();
+					}
+				}
+				unary = false;
+				break;
+				
+			case TK_LPAR:
+				op_stack.push( _curtk );
+				unary = true;
+				break;
+				
+			case TK_RPAR:
+				unary = false;
+				while ( op_stack.size() > 0 ) {
+					LexToken *stack_top = op_stack.top();
+					if ( stack_top->type != TK_LPAR ) {
+						if ( !op_stack.size() ) {
+							//throwError("mismatched parenthesis");
+							return node;
+						}
+						ParseNode *n = createNode(PT_OPERATOR);
+						n->lextoken = tk_s;
+						n->v = tk_s->type;
+						addNode(n, node);
+						
+						op_stack.pop();
+					}
+				}
+				break;
+				
+			default: {
+				if ( _opTable[_curtk->type].valid ) {
+					if ( !_opTable[_curtk->type].unary ) {
+						while (op_stack.size() > 0) {
+							LexToken *stack_top = op_stack.top();
+							assert( stack_top );
+							if ( ( _opTable[_curtk->type].left_assoc && _opTable[_curtk->type].precendence > _opTable[stack_top->type].precendence ) ||
+									(! _opTable[_curtk->type].left_assoc && _opTable[_curtk->type].precendence >= _opTable[stack_top->type].precendence ) ) {
+								ParseNode *n = createNode(PT_OPERATOR);
+								n->lextoken = tk_s;
+								n->v = tk_s->type;
+								addNode(n, node);
+								
+								op_stack.pop();
+							}
+							else {
+								break;
+							}
+						}
+					}
+					
+					unary = true;
+					op_stack.push( _curtk );
+				}
+				else {
+					// unknown token (string ended)
+					return node;
+				}
+			}
+			break;
+		}
+		nextToken();
+	}
+	
+	assert( 0 );
+	
+	free(node);
+	return NULL;
 }
 
 ParseNode* Parser::parseFuncName() {
