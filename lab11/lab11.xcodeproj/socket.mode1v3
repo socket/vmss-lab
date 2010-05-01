@@ -271,7 +271,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>6</integer>
+									<integer>4</integer>
 									<integer>2</integer>
 									<integer>1</integer>
 									<integer>0</integer>
@@ -315,7 +315,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>Parser.cpp</string>
+								<string>Lexer.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -323,11 +323,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>Parser.cpp</string>
+										<string>Lexer.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>B8204DEE118C8E910033C797</string>
+										<string>B8204E14118C92DC0033C797</string>
 										<key>history</key>
 										<array>
 											<string>B8204BD1118AD8CA0033C797</string>
@@ -336,10 +336,10 @@
 											<string>B8204D93118C67D70033C797</string>
 											<string>B8204D95118C67D70033C797</string>
 											<string>B8204D96118C67D70033C797</string>
-											<string>B8204DE8118C8DB40033C797</string>
-											<string>B8204DE9118C8DB40033C797</string>
-											<string>B8204DEC118C8E910033C797</string>
-											<string>B8204DED118C8E910033C797</string>
+											<string>B8204DFD118C919C0033C797</string>
+											<string>B8204DFE118C919C0033C797</string>
+											<string>B8204E12118C92DC0033C797</string>
+											<string>B8204E13118C92DC0033C797</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>

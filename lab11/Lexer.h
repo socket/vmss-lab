@@ -87,7 +87,8 @@ protected:
 	LexToken* getToken();
 	char			nextChar();	
 	LexToken* makeDoubleNumberToken(LexToken *tkLeft, LexToken *tkRight);
-	
+	TLexToken getReservedWord(const char *word);
+
 };
 
 #endif //_Lexer_h

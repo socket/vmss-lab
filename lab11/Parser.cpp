@@ -11,6 +11,26 @@
 
 OperatorPrecendence *Parser::_opTable = NULL;
 
+static const char *parseTokenTypeStr[] = {
+	"PT_CHUNK",
+	"PT_BLOCK",
+	"PT_STATEMENT",
+	"PT_LASTSTATEMENT",
+	"PT_VAR",
+	"PT_EXP",
+	"PT_FUNCTIONCALL",
+	"PT_FUNCTION",
+	"PT_EXPLIST",
+	"PT_WHILE",
+	"PT_IF",
+	"PT_FUNCNAME",
+	"PT_FUNCBODY",
+	"PT_OPERATOR",
+	
+	"PT_QTY"
+};
+
+
 Parser::Parser() {
 	if ( !_opTable ) {
 		initOperatorTable(); 

@@ -227,6 +227,10 @@ LexToken* Lexer::getToken() {
 							}
 							else break;
 						}
+						TLexToken tktype = getReservedWord( token->data );
+						if ( tktype != TK_QTY ) {
+							token->type = tktype;
+						}
 						_buff--;
 						return token;
 					}
@@ -249,3 +253,33 @@ LexToken* Lexer::getToken() {
 	
 	return token;
 }
+
+TLexToken Lexer::getReservedWord(const char *word) {
+	struct _ResWord {
+		const char* word;
+		TLexToken type;
+	};
+	
+	static _ResWord words[] = {
+		{"if", TK_IF},
+		{"function", TK_FUNCTION},
+		{"local", TK_LOCAL},
+		{"while", TK_WHILE},
+		{"do", TK_DO},
+		{"then", TK_THEN},
+		{"end", TK_END},
+		{"else", TK_ELSE},
+		{"var", TK_VAR},
+		{"return", TK_RETURN},
+		{"break", TK_BREAK},
+	};
+	
+	for ( int i=0; i < sizeof(words)/sizeof(_ResWord); i++ ) {
+		if (!strcmp(word, words[i].word) ) {
+			return words[i].type;
+		}
+	}
+	
+	return TK_QTY;
+}
+
