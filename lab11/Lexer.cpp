@@ -205,7 +205,7 @@ LexToken* Lexer::getToken() {
 					
 					// vars
 					if ( isalpha(ch) ) {
-						token->type = TK_IDENT;
+						token->type = TK_VAR;
 						for(;;)  {
 							ch = *_buff++;
 							if ( isalnum(ch) ) {

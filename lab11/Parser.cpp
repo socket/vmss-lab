@@ -34,18 +34,19 @@ ParseNode* Parser::createNode(ParseTokenType type)  {
 }
 
 // adds a node as a child to the current node and sets current node to child
-void Parser::addNode(ParseNode *node, ParseNode *parentNode) {
+ParseNode* Parser::addNode(ParseNode *node, ParseNode *parentNode) {
 	assert( node );
 	assert( parentNode );
 	assert( node != parentNode );
 	
 	parentNode->children.push_back( node );
+
+	return node;
 }
 
 // accepts given node and adds it to parent node
 bool Parser::acceptNode(ParseTokenType type, ParseNode *node, ParseNode *parentNode) {
-	assert( node );
-	if ( node->type == type ) {
+	if ( node && node->type == type ) {
 		assert( parentNode );
 		addNode( node, parentNode );
 		return true;
@@ -99,12 +100,75 @@ ParseNode* Parser::parseChunk() {
 	_topNode = createNode(PT_CHUNK);
 	assert( _topNode );
 	
-	parseBlock( _topNode );
+	addNode( _topNode, parseBlock() );
 	return _topNode;
 }
 
+ParseNode*  Parser::parseBlock() {
+	ParseNode *node = createNode(PT_BLOCK);
+	//block ::= {statement ';'} [laststatement ';']
+	while ( acceptNode( PT_STATEMENT, parseStatement(), node ) ) {
+		expectToken(TK_SEMICOLON);
+	}
+	if ( acceptNode( PT_LASTSTATEMENT, parseLastStatement(), node ) ) {
+		expectToken(TK_SEMICOLON);
+	}
+	return node;
+}
 
+ParseNode* Parser::parseVar() {
+	if ( acceptToken(TK_VAR) ) {
+		ParseNode *node = createNode(PT_VAR);
+		expectToken(TK_ASSIGN);
+		expectNode(PT_EXPR, parseExp(), node);
+		
+		return node;
+	}
+	return NULL;
+}
 
+ParseNode* Parser::parseFunctionCall() {
+	if ( acceptToken(TK_VAR) ) {
+		ParseNode *node = createNode(PT_FUNCTIONCALL);
+		expectToken(TK_LPAR);
+		expectNode( PT_EXPRLIST, parseArgList(), node);
+		expectToken(TK_RPAR);
+		return node;
+	}
+	return NULL;
+}
+
+ParseNode* Parser::parseExpList() {
+	ParseNode *node = createNode(PT_EXPRLIST);
+	while ( acceptNode(PT_EXPR, parseExp(), node) ) {
+		expectToken(TK_COMMA);		// ToDo!
+	}
+	return node;
+}
+
+/*
+statement ::= var '=' exp | 
+functioncall |
+`while` exp `do` block `end` |
+`if` exp then `block` [else block] end |
+`function` funcname funcbody |
+`local` var ['=' exp]
+*/
+
+ParseNode* Parser::parseStatement() {
+	ParseNode *node = createNode(PT_STATEMENT);
+	
+	if ( acceptNode( PT_VAR, parseVar(), node ) ) {
+	}
+	else if ( acceptNode( PT_FUNCTIONCALL, parseFunctionCall(), node ) ) {
+	}
+	else {
+		free( node );
+		node = NULL;
+	}
+	
+	return node;
+}
 ///////////////////////////////////////////////////////////////////////////////////////////
 
 

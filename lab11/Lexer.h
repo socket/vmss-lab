@@ -18,7 +18,7 @@ enum TLexToken {
 	TK_INT,
 	TK_FLOAT,
 	TK_LITERAL,
-	TK_IDENT,
+	TK_VAR,
 	
 	// parenthesis
 	TK_LPAR,

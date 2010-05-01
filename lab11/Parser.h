@@ -47,6 +47,10 @@ enum ParseTokenType {
 	PT_BLOCK,
 	PT_STATEMENT,
 	PT_LASTSTATEMENT,
+	PT_VAR,
+	PT_EXPR,
+	PT_FUNCTIONCALL,
+	PT_EXPRLIST,
 	
 	PT_QTY
 };
@@ -82,7 +86,7 @@ private:
 	// creates a node with given type
 	ParseNode*	createNode(ParseTokenType type);
 	// adds a node as a child to the current node and sets current node to child
-	void				addNode(ParseNode *node, ParseNode *parentNode);
+	ParseNode*	addNode(ParseNode *node, ParseNode *parentNode);
 	// accepts given node and adds it to parent node
 	bool				acceptNode(ParseTokenType type, ParseNode *node, ParseNode *parentNode);
 	// same as accept but throws an error if node does not match type
@@ -100,7 +104,14 @@ public:
 	ParseNode*  parseChunk();
 	
 	// block ::= {statement ';'} [laststatement ';']
-	ParseNode*  parseBlock(ParseNode *parent);
+	ParseNode*  parseBlock();
+	ParseNode*  parseStatement();
+	ParseNode*  parseVar();
+	
+	ParseNode*  parseFunctionCall();
+
+	ParseNode*  parseExp();
+	ParseNode*  parseExpList();
 	
 	
 public:
