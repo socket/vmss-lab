@@ -139,7 +139,8 @@ bool Parser::acceptToken(TLexToken type) {
 // same, but token is required
 bool Parser::expectToken(TLexToken type) {	
 	if ( !acceptToken(type) ) {
-		throwError("unexpected token %s (was looking for %s)", parseTokenTypeStr[_curtk->type], parseTokenTypeStr[type]);
+		throwError("unexpected token %s (was looking for %s)", Lexer::getTokenTypeString(_curtk->type), 
+							 Lexer::getTokenTypeString(type));
 		return false;
 	}
 	return true;

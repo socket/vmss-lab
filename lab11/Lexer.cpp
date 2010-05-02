@@ -11,6 +11,7 @@
 #include "Lexer.h"
 
 const char* Lexer::token_strings[] = {
+	"TK_NONE",
 	"TK_INT",
 	"TK_FLOAT",
 	"TK_LITERAL",
@@ -116,7 +117,7 @@ int Lexer::analyze(const char* input, LexToken **tokens_, int *count) {
 		
 		// make doubles from number-dot-number
 		if ( tk->type == TK_INT ) {
-			tk->v.intval = atoi(tk->data);
+			tk->intval = atoi(tk->data);
 			if ( tkprev1 && tkprev2 && tkprev1->type == TK_DOT && tkprev2->type == TK_INT ) {
 				tokens--; *tokens-- = 0;		// pop 2 tokens from list
 				tk_count -= 2;
@@ -132,12 +133,24 @@ int Lexer::analyze(const char* input, LexToken **tokens_, int *count) {
 	}
 	*tokens = 0;
 	*count = tk_count;
-	*tokens_ = *tokens_s;
 	
-	while (tk_count--) {
-		printf("%s '%s'\n", token_strings[(*tokens_s)->type], (*tokens_s)->data);
+	LexToken *tokens_flat = (LexToken*)calloc(tk_count+1, sizeof(LexToken));
+	memset(tokens_flat, 0, (tk_count+1)*sizeof(LexToken));
+	for (int i=0; i<tk_count; ++i )  {
+		memcpy(&tokens_flat[i], tokens_s[i], sizeof(LexToken));
+	}
+	
+	*tokens_ = tokens_flat;
+	
+	for (int i=0; i<tk_count; ++i ) {
+		printf("%s '%s'\n", token_strings[tokens_flat[i].type], tokens_flat[i].data);
 		tokens_s++;
 	}
+	
+	while (*tokens_s) {
+		free(*tokens_s++);
+	}
+	
 	
 	return 0;
 }
@@ -149,7 +162,7 @@ LexToken* Lexer::makeDoubleNumberToken(LexToken *tkLeft, LexToken *tkRight) {
 	strcat(token->data, ".");
 	strcat(token->data, tkRight->data);
 	token->type = TK_FLOAT;
-	token->v.dblval = atof(token->data);
+	token->dblval = atof(token->data);
 	return token;
 }
 

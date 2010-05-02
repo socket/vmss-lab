@@ -17,6 +17,7 @@
 #include <assert.h>
 
 enum TLexToken {
+	TK_NONE,
 	TK_INT,
 	TK_FLOAT,
 	TK_LITERAL,
@@ -71,11 +72,9 @@ struct LexToken {
 	TLexToken type;
 	char data[256];
 	
-	union {
-		void*			pv;
-		int				intval;
-		double		dblval;
-	} v;
+	void*			pv;
+	int				intval;
+	double		dblval;
 	
 	int	_line;
 };
