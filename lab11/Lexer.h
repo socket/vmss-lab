@@ -6,13 +6,15 @@
  *  Copyright 2010 Zila Networks LLC. All rights reserved.
  *
  */
+
+#ifndef _Lexer_h
+#define _Lexer_h
+
 #include <memory.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <ctype.h>
-
-#ifndef _Lexer_h
-#define _Lexer_h
+#include <assert.h>
 
 enum TLexToken {
 	TK_INT,
@@ -51,6 +53,15 @@ enum TLexToken {
 	TK_RETURN,
 	TK_BREAK,
 	
+	TK_LESS,
+	TK_GREATER,
+	TK_LEQ,
+	TK_GREQ,
+	
+	TK_EQUAL,
+	TK_NEQ,
+	TK_NOT,
+	
 	TK_EOF,
 	TK_UNKNOWN,
 	TK_QTY
@@ -76,12 +87,16 @@ class Lexer {
 	int		 _buffSize;
 	int		 _curline;
 	int		 _errline;
-	
+
+	static const char *token_strings[];
+
 public:
 	Lexer();
 	virtual ~Lexer();
 	
 	int analyze(const char* input, LexToken **tokens, int *count);
+	
+	static const char* getTokenTypeString(TLexToken type);
 	
 protected:
 	LexToken* getToken();

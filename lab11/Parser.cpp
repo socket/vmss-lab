@@ -26,6 +26,7 @@ static const char *parseTokenTypeStr[] = {
 	"PT_FUNCNAME",
 	"PT_FUNCBODY",
 	"PT_OPERATOR",
+	"PT_VAR_DECLARE",
 	
 	"PT_QTY"
 };
@@ -45,8 +46,25 @@ void Parser::init(LexToken *tokens) {
 	_curtk = tokens;
 }
 
+void Parser::reset() {
+	_curtk = _tokens;
+	deallocChildren(_topNode);
+	delete _topNode;
+	_topNode = NULL;
+}
+
 void Parser::throwError(const char* err, ...) {
-	printf("%s", err);
+	char buff[256];
+	char buff2[256];
+	memset(buff, 0, sizeof(buff));
+	memset(buff2, 0, sizeof(buff2));
+	
+	va_list args;
+	va_start(args, err);
+	vsnprintf( buff, sizeof(buff) - 1, err, args); 
+	sprintf(buff2, "syntax error: %s", buff);
+
+	throw ParseException(buff2);
 }
 
 void Parser::initOperatorTable() {
@@ -121,7 +139,7 @@ bool Parser::acceptToken(TLexToken type) {
 // same, but token is required
 bool Parser::expectToken(TLexToken type) {	
 	if ( !acceptToken(type) ) {
-		throwError("invalid token");
+		throwError("unexpected token %s (was looking for %s)", parseTokenTypeStr[_curtk->type], parseTokenTypeStr[type]);
 		return false;
 	}
 	return true;
@@ -132,6 +150,18 @@ void Parser::nextToken() {
 	assert( _curtk );
 	_curtk++;
 	assert( _curtk );
+}
+
+bool Parser::parse() {
+	bool result = true;
+	try {
+		parseChunk();
+	}
+	catch (ParseException e) {
+		result = false;
+		printf( "%s\n", e.error() );
+	}
+	return result;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////
@@ -164,9 +194,8 @@ ParseNode* Parser::parseLastStatement() {
 }
 
 ParseNode* Parser::parseVar() {
-	if ( acceptToken(TK_VAR) ) {
+	if ( acceptToken(TK_IDENT) ) {
 		ParseNode *node = createNode(PT_VAR);
-		expectToken(TK_IDENT);
 		node->lextoken = _curtk-1;
 		expectToken(TK_ASSIGN);
 		expectNode(PT_EXP, parseExp(), node);
@@ -312,10 +341,13 @@ ParseNode* Parser::parseFuncBody() {
 ParseNode* Parser::parseStatement() {
 	ParseNode *node = createNode(PT_STATEMENT);
 	
-	if ( acceptToken(TK_VAR)) {
-		expectNode(PT_VAR, parseVar(), node);
-	}
+	if ( acceptNode( PT_VAR, parseVar(), node)) { }
 	else if ( acceptNode( PT_FUNCTIONCALL, parseFunctionCall(), node ) ) { }
+	else if ( acceptToken(TK_VAR) ) {
+		ParseNode *w = addNode(node, createNode(PT_VAR_DECLARE));
+		expectToken(TK_IDENT);
+		w->lextoken = _curtk-1;
+	}
 	else if ( acceptToken(TK_WHILE) ) {
 		ParseNode *w = addNode(node, createNode(PT_WHILE));
 		expectNode(PT_EXP, parseExp(), w);
@@ -341,4 +373,31 @@ ParseNode* Parser::parseStatement() {
 	}
 	
 	return node;
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////
+void	Parser::printNodeInfo(FILE *file, ParseNode *node, int indentation) {
+	assert( file );
+	assert( node );
+	for (int i=0; i<indentation; ++i) {
+		fprintf(file, "\t");
+	}
+	fprintf(file, "%s\n", parseTokenTypeStr[node->type]);
+	for (int i=0; i<node->children.size(); ++i ) {
+		printNodeInfo(file, node->children[i], indentation+1);
+	}
+}
+
+void Parser::saveDebugTree(FILE* file) {
+	assert( file );
+	printNodeInfo(file, _topNode);
+}
+
+void Parser::deallocChildren(ParseNode *node) {
+	assert( node );
+	for (int i=0; i<node->children.size(); ++i ) {
+		deallocChildren( node->children[i] );
+		delete node->children[i];
+	}	
+	node->children.clear();
 }

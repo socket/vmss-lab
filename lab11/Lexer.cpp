@@ -10,7 +10,7 @@
 
 #include "Lexer.h"
 
-const char* token_strings[] = {
+const char* Lexer::token_strings[] = {
 	"TK_INT",
 	"TK_FLOAT",
 	"TK_LITERAL",
@@ -47,6 +47,15 @@ const char* token_strings[] = {
 	"TK_RETURN",
 	"TK_BREAK",
 	
+	"TK_LESS",
+	"TK_GREATER",
+	"TK_LEQ",
+	"TK_GREQ",
+	
+	
+	"TK_EQUAL",
+	"TK_NEQ",
+	"TK_NOT",
 	"TK_EOF",
 	"TK_UNKNOWN",
 	"TK_QTY"
@@ -123,7 +132,7 @@ int Lexer::analyze(const char* input, LexToken **tokens_, int *count) {
 	}
 	*tokens = 0;
 	*count = tk_count;
-	*tokens = *tokens_s;
+	*tokens_ = *tokens_s;
 	
 	while (tk_count--) {
 		printf("%s '%s'\n", token_strings[(*tokens_s)->type], (*tokens_s)->data);
@@ -177,6 +186,11 @@ LexToken* Lexer::getToken() {
 				case '-': token->type = TK_MINUS; return token;
 				case '*': token->type = TK_MUL;   return token;
 				case '=': token->type = TK_ASSIGN;   return token;
+				
+				case '!': token->type = TK_NOT;  return token;
+				case '>': token->type = TK_LESS;  return token;
+				case '<': token->type = TK_GREATER; return token;
+					
 				case '/': 
 				{
 					char chn = *_buff++;
@@ -221,16 +235,15 @@ LexToken* Lexer::getToken() {
 						token->type = TK_IDENT;
 						for(;;)  {
 							ch = *_buff++;
-							if ( isalnum(ch) ) {
+							if ( isalnum(ch) || ch == '_') {
 								*token_data++ = ch;
-								break;
 							}
 							else break;
 						}
-						TLexToken tktype = getReservedWord( token->data );
+						/*TLexToken tktype = getReservedWord( token->data );
 						if ( tktype != TK_QTY ) {
 							token->type = tktype;
-						}
+						}*/
 						_buff--;
 						return token;
 					}
@@ -283,3 +296,7 @@ TLexToken Lexer::getReservedWord(const char *word) {
 	return TK_QTY;
 }
 
+const char* Lexer::getTokenTypeString(TLexToken type) {
+	assert( type < TK_QTY );
+	return token_strings[type];
+}

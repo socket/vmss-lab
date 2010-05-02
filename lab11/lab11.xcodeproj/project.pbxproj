@@ -33,6 +33,7 @@
 		8DD76F6C0486A84900D96B5E /* lab11 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = lab11; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8204D23118B3C3E0033C797 /* Parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
 		B8204D24118B3C3E0033C797 /* Parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Parser.cpp; sourceTree = "<group>"; };
+		B8204E3E118C96250033C797 /* test.yauc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.yauc; sourceTree = "<group>"; };
 		B8F6B216118996B400DF2580 /* vmss_convert.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vmss_convert.c; sourceTree = "<group>"; };
 		B8F6B217118996B400DF2580 /* vmss_convert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vmss_convert.h; sourceTree = "<group>"; };
 		B8F6B218118996B400DF2580 /* vmss_string.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vmss_string.c; sourceTree = "<group>"; };
@@ -57,6 +58,7 @@
 		08FB7794FE84155DC02AAC07 /* lab11 */ = {
 			isa = PBXGroup;
 			children = (
+				B8204E3D118C96000033C797 /* Test */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				C6859E8C029090F304C91782 /* Documentation */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
@@ -84,6 +86,14 @@
 				8DD76F6C0486A84900D96B5E /* lab11 */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B8204E3D118C96000033C797 /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				B8204E3E118C96250033C797 /* test.yauc */,
+			);
+			name = Test;
 			sourceTree = "<group>";
 		};
 		B8F6B26211899BEC00DF2580 /* Lexer */ = {

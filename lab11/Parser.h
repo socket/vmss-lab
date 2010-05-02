@@ -57,6 +57,7 @@ enum ParseTokenType {
 	PT_FUNCNAME,
 	PT_FUNCBODY,
 	PT_OPERATOR,
+	PT_VAR_DECLARE,
 	
 	PT_QTY
 };
@@ -83,7 +84,8 @@ class ParseException {
 	std::string _error;
 	
 public:
-	ParseException(const char* _error);
+	ParseException(const char* error) { _error = error; }
+	const char* error() { return _error.c_str(); }
 };
 
 class Parser {
@@ -100,14 +102,11 @@ private:
 	// error handling
 	void throwError(const char* err, ...);
 		
-private:
-	// returns current node
-	ParseNode*	getNode();
-	
+private:	
 	// creates a node with given type
-	ParseNode*	createNode(ParseTokenType type);
+	static	ParseNode*	createNode(ParseTokenType type);
 	// adds a node as a child to the current node and sets current node to child
-	ParseNode*	addNode(ParseNode *node, ParseNode *parentNode);
+	static	ParseNode*	addNode(ParseNode *node, ParseNode *parentNode);
 	// accepts given node and adds it to parent node
 	bool				acceptNode(ParseTokenType type, ParseNode *node, ParseNode *parentNode);
 	// same as accept but throws an error if node does not match type
@@ -120,7 +119,13 @@ private:
 	// moves to next token
 	void				nextToken();
 	
-public:
+	// prints debug info
+	static void	printNodeInfo(FILE *file, ParseNode *node, int indentation = 0);
+	
+	// deallocs node children
+	static void	deallocChildren(ParseNode *node);
+	
+private:
 	// chunk ::= block
 	ParseNode*  parseChunk();
 	
@@ -141,8 +146,11 @@ public:
 	Parser();
 	
 	void init(LexToken *tokens);
+	void reset();
 	
 	bool parse();
+	
+	void saveDebugTree(FILE* file);
 };
 
 #endif
