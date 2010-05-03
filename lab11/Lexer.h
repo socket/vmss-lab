@@ -76,7 +76,7 @@ struct LexToken {
 	int				intval;
 	double		dblval;
 	
-	int	_line;
+	int		line;
 };
 
 class Lexer {

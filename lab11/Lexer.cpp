@@ -73,7 +73,7 @@ Lexer::Lexer() {
 	_buff =  0;
 	
 	_buffSize = 0;
-	_curline = 0;
+	_curline = 1;
 	_errline = 0;
 }
 
@@ -99,7 +99,7 @@ int Lexer::analyze(const char* input, LexToken **tokens_, int *count) {
 	memset(tokens, 0, alloc_token_count+1);
 	//*tokens = *tokens_;
 	
-	_curline = 0;
+	_curline = 1;
 	_buff = (char*)malloc( len + 1 );
 	strcpy(_buff, input);
 	
@@ -171,6 +171,7 @@ LexToken* Lexer::getToken() {
 	memset(token, 0, sizeof(LexToken));
 	char		 *token_data = token->data;
 	
+	token->line = _curline;
 	token->type = TK_EOF;
 	int state = ls_def;
 	
@@ -253,10 +254,10 @@ LexToken* Lexer::getToken() {
 							}
 							else break;
 						}
-						/*TLexToken tktype = getReservedWord( token->data );
+						TLexToken tktype = getReservedWord( token->data );
 						if ( tktype != TK_QTY ) {
 							token->type = tktype;
-						}*/
+						}
 						_buff--;
 						return token;
 					}

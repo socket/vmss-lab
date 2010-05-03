@@ -47,7 +47,7 @@ enum ParseTokenType {
 	PT_BLOCK,
 	PT_STATEMENT,
 	PT_LASTSTATEMENT,
-	PT_VAR,
+	PT_VAR_ASSIGN,
 	PT_EXP,
 	PT_FUNCTIONCALL,
 	PT_FUNCTION,
@@ -58,6 +58,8 @@ enum ParseTokenType {
 	PT_FUNCBODY,
 	PT_OPERATOR,
 	PT_VAR_DECLARE,
+	PT_CONST,
+	PT_VAR,
 	
 	PT_QTY
 };
@@ -65,7 +67,7 @@ enum ParseTokenType {
 struct ParseNode;
 
 struct OperatorPrecendence {
-	OperatorPrecendence(bool precendence_, bool unary_) : precendence(precendence_), left_assoc(true), unary(unary_), valid(true) {}
+	OperatorPrecendence(int precendence_, bool unary_) : precendence(precendence_), left_assoc(true), unary(unary_), valid(true) {}
 	
 	int					precendence;
 	bool				left_assoc;
@@ -132,6 +134,7 @@ private:
 	// block ::= {statement ';'} [laststatement ';']
 	ParseNode*  parseBlock();
 	ParseNode*  parseStatement();
+	ParseNode*  parseVarAssignment();
 	ParseNode*  parseVar();
 	
 	ParseNode*  parseFunctionCall();

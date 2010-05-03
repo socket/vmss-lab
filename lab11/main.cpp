@@ -33,7 +33,10 @@ int main (int argc, char * const argv[]) {
 			fread(buff, 1, size, file);
 			lex.analyze(buff, &tokens, &count);
 			parser.init(tokens);
-			parser.parse();
+			if ( parser.parse() ) {
+				printf("*** Parse OK\n");
+				parser.saveDebugTree(stdout);
+			}
 			
 		}
 		fclose(file);

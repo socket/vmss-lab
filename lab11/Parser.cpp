@@ -16,7 +16,7 @@ static const char *parseTokenTypeStr[] = {
 	"PT_BLOCK",
 	"PT_STATEMENT",
 	"PT_LASTSTATEMENT",
-	"PT_VAR",
+	"PT_VAR_ASSIGN",
 	"PT_EXP",
 	"PT_FUNCTIONCALL",
 	"PT_FUNCTION",
@@ -27,6 +27,8 @@ static const char *parseTokenTypeStr[] = {
 	"PT_FUNCBODY",
 	"PT_OPERATOR",
 	"PT_VAR_DECLARE",
+	"PT_CONST",
+	"PT_VAR",
 	
 	"PT_QTY"
 };
@@ -72,10 +74,10 @@ void Parser::initOperatorTable() {
 	assert( _opTable );
 	memset(_opTable, 0, sizeof(OperatorPrecendence)*TK_QTY);
 	
-	_opTable[TK_PLUS] = OperatorPrecendence(1, true);
-	_opTable[TK_MINUS] = OperatorPrecendence(1, true);
-	_opTable[TK_MUL] = OperatorPrecendence(1, true);
-	_opTable[TK_DIV] = OperatorPrecendence(1, true);
+	_opTable[TK_PLUS] = OperatorPrecendence(3, false);
+	_opTable[TK_MINUS] = OperatorPrecendence(3, false);
+	_opTable[TK_MUL] = OperatorPrecendence(2, false);
+	_opTable[TK_DIV] = OperatorPrecendence(2, false);
 }
 
 
@@ -139,7 +141,7 @@ bool Parser::acceptToken(TLexToken type) {
 // same, but token is required
 bool Parser::expectToken(TLexToken type) {	
 	if ( !acceptToken(type) ) {
-		throwError("unexpected token %s (was looking for %s)", Lexer::getTokenTypeString(_curtk->type), 
+		throwError("(%s:%d) unexpected token %s (was looking for %s) ", "chunk", _curtk->line, Lexer::getTokenTypeString(_curtk->type), 
 							 Lexer::getTokenTypeString(type));
 		return false;
 	}
@@ -170,7 +172,7 @@ ParseNode* Parser::parseChunk() {
 	_topNode = createNode(PT_CHUNK);
 	assert( _topNode );
 	
-	addNode( _topNode, parseBlock() );
+	addNode( parseBlock(), _topNode);
 	return _topNode;
 }
 
@@ -194,13 +196,22 @@ ParseNode* Parser::parseLastStatement() {
 	return NULL;
 }
 
-ParseNode* Parser::parseVar() {
+ParseNode* Parser::parseVarAssignment() {
 	if ( acceptToken(TK_IDENT) ) {
-		ParseNode *node = createNode(PT_VAR);
+		ParseNode *node = createNode(PT_VAR_ASSIGN);
 		node->lextoken = _curtk-1;
 		expectToken(TK_ASSIGN);
 		expectNode(PT_EXP, parseExp(), node);
 		
+		return node;
+	}
+	return NULL;
+}
+
+ParseNode* Parser::parseVar() {
+	if ( acceptToken(TK_IDENT) ) {
+		ParseNode *node = createNode(PT_VAR);
+		node->lextoken = _curtk-1;
 		return node;
 	}
 	return NULL;
@@ -228,13 +239,14 @@ ParseNode* Parser::parseExpList() {
 
 ParseNode* Parser::parseExp() {
 	bool unary = false;
+	bool done = false;
 	
 	ParseNode *node = createNode(PT_EXP);
 	std::stack<LexToken*> op_stack;
 	
 	LexToken *tk_s = _curtk;
 	
-	while (_curtk) {
+	while (_curtk && !done) {
 		switch (_curtk->type) {
 			case TK_IDENT:
 				if ( (_curtk+1)->type == TK_LPAR ) { // function call 
@@ -242,16 +254,28 @@ ParseNode* Parser::parseExp() {
 				} 
 				else {	// variable
 					expectNode(PT_VAR, parseVar(), node );
+					_curtk--; // we will call nextToken later, so compensate this
+				}
+				
+			case TK_INT:
+			case TK_FLOAT:
+				if ( _curtk->type != TK_IDENT ) {
+					ParseNode *n = createNode(PT_CONST);
+					n->lextoken = _curtk;
+					addNode(n, node);
 				}
 				while (op_stack.size() > 0) {
 					LexToken *stack_top = op_stack.top();
-					if ( _opTable[stack_top->type].unary ) {
+					if ( _opTable[stack_top->type].valid && _opTable[stack_top->type].unary ) {
 						ParseNode *n = createNode(PT_OPERATOR);
-						n->lextoken = tk_s;
-						n->v = tk_s->type;
+						n->lextoken = stack_top;
+						n->v = stack_top->type;
 						addNode(n, node);
 						
 						op_stack.pop();
+					}
+					else {
+						break;
 					}
 				}
 				unary = false;
@@ -267,58 +291,79 @@ ParseNode* Parser::parseExp() {
 				while ( op_stack.size() > 0 ) {
 					LexToken *stack_top = op_stack.top();
 					if ( stack_top->type != TK_LPAR ) {
-						if ( !op_stack.size() ) {
+						if ( 1 == op_stack.size() ) {
 							//throwError("mismatched parenthesis");
+							nextToken();
 							return node;
+							
 						}
 						ParseNode *n = createNode(PT_OPERATOR);
-						n->lextoken = tk_s;
-						n->v = tk_s->type;
+						n->lextoken = stack_top;
+						n->v = stack_top->type;
 						addNode(n, node);
 						
 						op_stack.pop();
 					}
+					else {
+						op_stack.pop();
+						break;
+					}
+
 				}
 				break;
 				
-			default: {
-				if ( _opTable[_curtk->type].valid ) {
-					if ( !_opTable[_curtk->type].unary ) {
-						while (op_stack.size() > 0) {
-							LexToken *stack_top = op_stack.top();
-							assert( stack_top );
-							if ( ( _opTable[_curtk->type].left_assoc && _opTable[_curtk->type].precendence > _opTable[stack_top->type].precendence ) ||
-									(! _opTable[_curtk->type].left_assoc && _opTable[_curtk->type].precendence >= _opTable[stack_top->type].precendence ) ) {
-								ParseNode *n = createNode(PT_OPERATOR);
-								n->lextoken = tk_s;
-								n->v = tk_s->type;
-								addNode(n, node);
-								
-								op_stack.pop();
-							}
-							else {
-								break;
-							}
+			default:
+			if ( _opTable[_curtk->type].valid ) {
+				if ( !_opTable[_curtk->type].unary ) {
+					while (op_stack.size() > 0) {
+						LexToken *stack_top = op_stack.top();
+						assert( stack_top );
+						if ( _opTable[stack_top->type].valid && ( 
+								( _opTable[_curtk->type].left_assoc && _opTable[_curtk->type].precendence > _opTable[stack_top->type].precendence ) ||
+								(! _opTable[_curtk->type].left_assoc && _opTable[_curtk->type].precendence >= _opTable[stack_top->type].precendence ) )
+								) {
+							ParseNode *n = createNode(PT_OPERATOR);
+							n->lextoken = stack_top;
+							n->v = stack_top->type;
+							addNode(n, node);
+							
+							op_stack.pop();
+						}
+						else {
+							break;
 						}
 					}
-					
-					unary = true;
-					op_stack.push( _curtk );
 				}
-				else {
-					// unknown token (string ended)
-					return node;
-				}
+				unary = true;
+				op_stack.push( _curtk );
+			}
+			else {
+				// unknown token (string ended)
+				done = true;
 			}
 			break;
 		}
-		nextToken();
+		if ( ! done ) {
+			nextToken();
+		}
 	}
 	
-	assert( 0 );
+	while (op_stack.size() > 0) {
+		LexToken *stack_top = op_stack.top();
+		if ( stack_top->type == TK_LPAR || stack_top->type == TK_RPAR ) {
+			throwError("Mismatched parenthesis in expression");
+			return NULL;
+		}
+		
+		ParseNode *n = createNode(PT_OPERATOR);
+		n->lextoken = stack_top;
+		n->v = stack_top->type;
+		addNode(n, node);
+		
+		op_stack.pop();		
+	}
 	
-	free(node);
-	return NULL;
+	return node;
 }
 
 ParseNode* Parser::parseFuncName() {
@@ -342,29 +387,32 @@ ParseNode* Parser::parseFuncBody() {
 ParseNode* Parser::parseStatement() {
 	ParseNode *node = createNode(PT_STATEMENT);
 	
-	if ( acceptNode( PT_VAR, parseVar(), node)) { }
+	if ( acceptNode( PT_VAR_ASSIGN, parseVarAssignment(), node)) { }
 	else if ( acceptNode( PT_FUNCTIONCALL, parseFunctionCall(), node ) ) { }
 	else if ( acceptToken(TK_VAR) ) {
-		ParseNode *w = addNode(node, createNode(PT_VAR_DECLARE));
+		ParseNode *w = addNode(createNode(PT_VAR_DECLARE), node);
 		expectToken(TK_IDENT);
 		w->lextoken = _curtk-1;
 	}
 	else if ( acceptToken(TK_WHILE) ) {
-		ParseNode *w = addNode(node, createNode(PT_WHILE));
+		ParseNode *w = addNode(createNode(PT_WHILE), node);
 		expectNode(PT_EXP, parseExp(), w);
 		expectToken(TK_DO);
 		expectNode(PT_BLOCK, parseBlock(), w);
 		expectToken(TK_END);
 	}
 	else if ( acceptToken(TK_IF) ) {
-		ParseNode *w = addNode(node, createNode(PT_IF));
+		ParseNode *w = addNode(createNode(PT_IF), node);
 		expectNode(PT_EXP, parseExp(), w);
 		expectToken(TK_THEN);
 		expectNode(PT_BLOCK, parseBlock(), w);
+		if ( acceptToken(TK_ELSE) ) {
+			expectNode(PT_BLOCK, parseBlock(), w);			
+		}
 		expectToken(TK_END);
 	}
 	else if ( acceptToken(TK_FUNCTION) ) {
-		ParseNode *w = addNode(node, createNode(PT_FUNCTION));
+		ParseNode *w = addNode(createNode(PT_FUNCTION), node);
 		expectNode(PT_FUNCNAME, parseFuncName(), w);
 		expectNode(PT_FUNCBODY, parseFuncBody(), w);
 	}
@@ -383,7 +431,11 @@ void	Parser::printNodeInfo(FILE *file, ParseNode *node, int indentation) {
 	for (int i=0; i<indentation; ++i) {
 		fprintf(file, "\t");
 	}
-	fprintf(file, "%s\n", parseTokenTypeStr[node->type]);
+	fprintf(file, "%s", parseTokenTypeStr[node->type]);
+	if ( node->lextoken ) {
+		fprintf(file, " <- %s('%s')", Lexer::getTokenTypeString(node->lextoken->type), node->lextoken->data);	
+	}
+	fprintf(file, "\n");
 	for (int i=0; i<node->children.size(); ++i ) {
 		printNodeInfo(file, node->children[i], indentation+1);
 	}
