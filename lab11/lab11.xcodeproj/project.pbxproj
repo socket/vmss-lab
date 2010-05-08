@@ -10,7 +10,7 @@
 		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
 		8DD76F6A0486A84900D96B5E /* lab11.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* lab11.1 */; };
 		B8204D25118B3C3E0033C797 /* yaul_parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8204D24118B3C3E0033C797 /* yaul_parser.cpp */; };
-		B8C4202D119608300063BFB0 /* yaul_vm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8C4202C119608300063BFB0 /* yaul_vm.cpp */; };
+		B8C4202D119608300063BFB0 /* yaul_vm.c in Sources */ = {isa = PBXBuildFile; fileRef = B8C4202C119608300063BFB0 /* yaul_vm.c */; };
 		B8F6B21B118996B400DF2580 /* vmss_convert.c in Sources */ = {isa = PBXBuildFile; fileRef = B8F6B216118996B400DF2580 /* vmss_convert.c */; };
 		B8F6B21C118996B400DF2580 /* vmss_string.c in Sources */ = {isa = PBXBuildFile; fileRef = B8F6B218118996B400DF2580 /* vmss_string.c */; };
 		B8F6B26511899C3300DF2580 /* yaul_lexer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B8F6B26411899C3300DF2580 /* yaul_lexer.cpp */; };
@@ -36,7 +36,7 @@
 		B8204D24118B3C3E0033C797 /* yaul_parser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = yaul_parser.cpp; sourceTree = "<group>"; };
 		B8204E3E118C96250033C797 /* test.yauc */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = test.yauc; sourceTree = "<group>"; };
 		B8C4202B119608300063BFB0 /* yaul_vm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaul_vm.h; sourceTree = "<group>"; };
-		B8C4202C119608300063BFB0 /* yaul_vm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = yaul_vm.cpp; sourceTree = "<group>"; };
+		B8C4202C119608300063BFB0 /* yaul_vm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = yaul_vm.c; sourceTree = "<group>"; };
 		B8C42030119608CB0063BFB0 /* yaul_opcodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaul_opcodes.h; sourceTree = "<group>"; };
 		B8F6B216118996B400DF2580 /* vmss_convert.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vmss_convert.c; sourceTree = "<group>"; };
 		B8F6B217118996B400DF2580 /* vmss_convert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vmss_convert.h; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 				B8204D23118B3C3E0033C797 /* yaul_parser.h */,
 				B8204D24118B3C3E0033C797 /* yaul_parser.cpp */,
 				B8C4202B119608300063BFB0 /* yaul_vm.h */,
-				B8C4202C119608300063BFB0 /* yaul_vm.cpp */,
+				B8C4202C119608300063BFB0 /* yaul_vm.c */,
 				B8C42030119608CB0063BFB0 /* yaul_opcodes.h */,
 			);
 			name = Lexer;
@@ -170,7 +170,7 @@
 				B8F6B21C118996B400DF2580 /* vmss_string.c in Sources */,
 				B8F6B26511899C3300DF2580 /* yaul_lexer.cpp in Sources */,
 				B8204D25118B3C3E0033C797 /* yaul_parser.cpp in Sources */,
-				B8C4202D119608300063BFB0 /* yaul_vm.cpp in Sources */,
+				B8C4202D119608300063BFB0 /* yaul_vm.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
