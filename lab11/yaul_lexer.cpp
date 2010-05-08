@@ -8,7 +8,7 @@
  */
 #define TOKEN_BUFF_STEP 255;
 
-#include "Lexer.h"
+#include "yaul_lexer.h"
 
 const char* Lexer::token_strings[] = {
 	"TK_NONE",

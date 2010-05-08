@@ -10,8 +10,8 @@
 // 23. 4 to 16
 
 #include "vmss_common.h"
-#include "Lexer.h"
-#include "Parser.h"
+#include "yaul_lexer.h"
+#include "yaul_parser.h"
 
 int main (int argc, char * const argv[]) {
 	Lexer lex;

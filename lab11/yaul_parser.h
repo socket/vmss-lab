@@ -15,7 +15,7 @@
 #include <vector>
 #include <string>
 
-#include "Lexer.h"
+#include "yaul_lexer.h"
 
 /* EBNF syntax form
  chunk ::= block
