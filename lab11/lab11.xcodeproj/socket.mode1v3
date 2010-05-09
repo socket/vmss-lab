@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>B8C93E1C1197657D00A27D6A</string>
+						<string>B8C93E5A11976C5600A27D6A</string>
 						<key>history</key>
 						<array>
 							<string>B8C42297119729360063BFB0</string>
@@ -315,9 +315,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>10</integer>
-									<integer>4</integer>
-									<integer>3</integer>
+									<integer>2</integer>
+									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -359,7 +358,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>yaul_vm.c</string>
+								<string>test.yauc</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -367,11 +366,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>yaul_vm.c</string>
+										<string>test.yauc</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>B8C93E1B1197657D00A27D6A</string>
+										<string>B8C93E5911976C5600A27D6A</string>
 										<key>history</key>
 										<array>
 											<string>B8204D93118C67D70033C797</string>
@@ -385,17 +384,17 @@
 											<string>B8C421EB11970E670063BFB0</string>
 											<string>B8C421EC11970E670063BFB0</string>
 											<string>B8C422471197137D0063BFB0</string>
-											<string>B8C93E02119762A800A27D6A</string>
 											<string>B8C93E03119762A800A27D6A</string>
-											<string>B8C93E06119762A800A27D6A</string>
-											<string>B8C93E131197657D00A27D6A</string>
-											<string>B8C93E141197657D00A27D6A</string>
 											<string>B8C93E151197657D00A27D6A</string>
 											<string>B8C93E161197657D00A27D6A</string>
 											<string>B8C93E171197657D00A27D6A</string>
 											<string>B8C93E181197657D00A27D6A</string>
 											<string>B8C93E191197657D00A27D6A</string>
-											<string>B8C93E1A1197657D00A27D6A</string>
+											<string>B8C93E34119769E100A27D6A</string>
+											<string>B8C93E35119769E100A27D6A</string>
+											<string>B8C93E4F11976B8300A27D6A</string>
+											<string>B8C93E5711976C5600A27D6A</string>
+											<string>B8C93E5811976C5600A27D6A</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -598,8 +597,8 @@
 		<string>B8F6B247118998B900DF2580</string>
 		<string>B8C420FF1196F88D0063BFB0</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/socket/University/vmss-lab/lab11/lab11.xcodeproj</string>
+		<string>1C78EAAD065D492600B07095</string>
 	</array>
 	<key>WindowString</key>
 	<string>0 59 1440 819 0 0 1440 878 </string>

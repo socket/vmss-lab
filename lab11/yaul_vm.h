@@ -73,7 +73,7 @@ void				yaul_push_string(yaul_state *Y, const char* value);
 void				yaul_setglobal(yaul_state *Y);
 void				yaul_getglobal(yaul_state *Y);
 
-void				yaul_setcfunc(yaul_state *Y, const char *name, int (*func)(yaul_state* Y));
+void				yaul_setcfunc(yaul_state *Y, const char *name, int (*func)(yaul_state*));
 
 int				yaulvm_exec_op(yaul_state *Y, yaul_op *o);
 

@@ -110,17 +110,41 @@ int yaulvm_exec_op(yaul_state *Y, yaul_op *o) {
 			break;
 			
 		case OP_CMP:
-			
+			{
+				yaul_var *t = 0;
+				yaul_get(Y, &t, 0);
+				assert(t);
+				Y->_cmp_flag = (t->_value != 0);
+			}
+			break;
 			
 		case OP_CALLFUNC:
+			{ // C-Funcs only atm
+				yaul_var *ft = 0;
+				yaul_get(Y, &ft, 0);
+				if ( ft->_type == YVM_CFUNCTION ) {
+					((int (*)(yaul_state*))(ft->_value))(Y); // some black magic
+				}
+				else {
+					yaul_push_string(Y, "cannot call not a C-func");
+					return -1;
+				}
+
+			}
+			break;
 		
 		case OP_GETGLOBAL:
+			yaul_getglobal(Y);
+			break;
+			
 		case OP_SETGLOBAL:
-		
+			yaul_setglobal(Y);
+			break;
 			
 		default:
 			break;
 	}
+	return 0;
 }
 
 void yaul_push_int(yaul_state *Y, int value) {
@@ -147,7 +171,7 @@ void yaul_get(yaul_state *Y, yaul_var **var, int pos) {
 		pos = -pos;
 	}
 	if ( Y->_dsz - 1 + pos > 0 ) {
-		*var = Y->_data_stack[Y->_dsz- 1 + pos];
+		*var = & Y->_data_stack[Y->_dsz - 1 + pos];
 	}
 	else {
 		*var = 0;
@@ -157,20 +181,62 @@ void yaul_get(yaul_state *Y, yaul_var **var, int pos) {
 void yaul_pop(yaul_state *Y, int n) {
 	while(n-- > 0) {
 		if ( Y->_data_stack[Y->_dpos-1]._type == YVM_STRING ) {
-			free((void*)Y->_data_stack[Y->_dpos-1]._value);
+//			free((void*)Y->_data_stack[Y->_dpos-1]._value); // will cause problems
 		}
 		Y->_dpos--;	
 	}
 }
 
 void yaul_setglobal(yaul_state *Y) {
+	yaul_var *t = 0;
+	yaul_var *val = 0;
+	yaul_get(Y, &t, -1);
+	yaul_get(Y, &val, 0);
 	
+	assert(t);
+	assert(t->_type == YVM_STRING);
+	
+	int i;
+	for( i=0; i < Y->_gsz; ++i ) {
+		if ( !strcmp( Y->_globals[i]._name, (const char*)t->_value) ) {
+			Y->_globals[i]._value = val->_value;
+			yaul_pop(Y, 2);
+			return;
+		}
+	}
+	
+	Y->_globals[Y->_gsz]._name = (const char*)t->_value;
+	Y->_globals[Y->_gsz]._type = val->_value;
+	Y->_globals[Y->_gsz]._value = val->_value;
+	
+	Y->_gsz++;
+	yaul_pop(Y, 2);	
 }
 
 void yaul_getglobal(yaul_state *Y) {
+	yaul_var *t = 0;
+	yaul_get(Y, &t, 0);
+	assert(t);
+	assert(t->_type == YVM_STRING);
 	
+	int i;
+	for( i=0; i < Y->_gsz; ++i ) {
+		if ( !strcmp( Y->_globals[i]._name, (const char*)t->_value) ) {
+			yaul_pop(Y, 1);
+			yaul_push(Y, &Y->_globals[i]);
+			return;
+		}
+	}
+	yaul_pop(Y, 1);
+	yaul_push_int(Y, 0);
 }
 
-void yaul_setcfunc(yaul_state *Y, const char *name, int (*func)(yaul_state* Y)) {
+void yaul_setcfunc(yaul_state *Y, const char *name, int (*func)(yaul_state*)) {
+	yaul_var cfv;
+	cfv._type = YVM_CFUNCTION;
+	cfv._value = (long)func;
 	
+	yaul_push_string(Y, name);
+	yaul_push(Y, &cfv);
+	yaul_setglobal(Y);
 }

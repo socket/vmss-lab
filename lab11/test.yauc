@@ -25,4 +25,4 @@ end;
 
 src_value = src_value + sin(5);
 
-print(5,6,7);
+print(src_value);
