@@ -43,23 +43,23 @@
  unop ::= '-' | '!'
 */
 enum ParseTokenType {
-	PT_CHUNK,
+	PT_CHUNK,					//
 	PT_BLOCK,
 	PT_STATEMENT,
 	PT_LASTSTATEMENT,
-	PT_VAR_ASSIGN,
-	PT_EXP,
-	PT_FUNCTIONCALL,
+	PT_VAR_ASSIGN,		//
+	PT_EXP,						//
+	PT_FUNCTIONCALL,	
 	PT_FUNCTION,
 	PT_EXPLIST,
-	PT_WHILE,
-	PT_IF,
+	PT_WHILE,					//
+	PT_IF,						//
 	PT_FUNCNAME,
 	PT_FUNCBODY,
-	PT_OPERATOR,
-	PT_VAR_DECLARE,
-	PT_CONST,
-	PT_VAR,
+	PT_OPERATOR,			//
+	PT_VAR_DECLARE,		//
+	PT_CONST,					//
+	PT_VAR,						//
 	
 	PT_QTY
 };

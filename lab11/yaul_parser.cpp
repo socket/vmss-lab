@@ -78,6 +78,7 @@ void Parser::initOperatorTable() {
 	_opTable[TK_MINUS] = OperatorPrecendence(3, false);
 	_opTable[TK_MUL] = OperatorPrecendence(2, false);
 	_opTable[TK_DIV] = OperatorPrecendence(2, false);
+	
 }
 
 

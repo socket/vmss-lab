@@ -63,6 +63,10 @@ enum TLexToken {
 	TK_NEQ,
 	TK_NOT,
 	
+	TK_AND,
+	TK_OR,
+	TK_XOR,
+	
 	TK_EOF,
 	TK_UNKNOWN,
 	TK_QTY

@@ -6,7 +6,8 @@
  *  Copyright 2010 Zila Networks LLC. All rights reserved.
  *
  */
-
+#ifndef _yaul_opcodes_h
+#define _yaul_opcodes_h
 typedef enum { 
 	OP_PUSH_INT,
 	OP_PUSH_DOUBLE,
@@ -15,13 +16,14 @@ typedef enum {
 	OP_POP,
 	OP_RETN,
 	
-	OP_ADD,
+	OP_ADD,		// pop 2 push 1
 	OP_SUB,
 	OP_MUL,
 	OP_DIV,
 	OP_BIN_AND,
 	OP_BIN_OR,
 	OP_NOT,
+	OP_XOR,
 	
 	OP_EQ,
 	OP_NEQ,
@@ -56,3 +58,7 @@ typedef struct  {
 } yaul_op_t;
 
 typedef yaul_op_t yaul_op;
+
+
+#endif
+
