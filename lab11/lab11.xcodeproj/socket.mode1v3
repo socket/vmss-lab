@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>B8C421071196F8D40063BFB0</string>
+						<string>B8C42196119706FA0063BFB0</string>
 						<key>history</key>
 						<array>
 							<string>B8C420F11196F79D0063BFB0</string>
@@ -371,7 +371,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>B8C421061196F8D40063BFB0</string>
+										<string>B8C42195119706FA0063BFB0</string>
 										<key>history</key>
 										<array>
 											<string>B8204BD1118AD8CA0033C797</string>
@@ -383,18 +383,18 @@
 											<string>B8204F3E118D8C9F0033C797</string>
 											<string>B8204FDC118D97ED0033C797</string>
 											<string>B8EDCDB9118EE6B30026C071</string>
-											<string>B8C42054119626D20063BFB0</string>
-											<string>B8C420B31196E66A0063BFB0</string>
-											<string>B8C420B51196E66A0063BFB0</string>
 											<string>B8C420CF1196E9DA0063BFB0</string>
 											<string>B8C420D01196E9DA0063BFB0</string>
-											<string>B8C420D11196E9DA0063BFB0</string>
-											<string>B8C420D21196E9DA0063BFB0</string>
-											<string>B8C420D31196E9DA0063BFB0</string>
-											<string>B8C420FA1196F88D0063BFB0</string>
-											<string>B8C420FB1196F88D0063BFB0</string>
-											<string>B8C420FC1196F88D0063BFB0</string>
-											<string>B8C420FD1196F88D0063BFB0</string>
+											<string>B8C4211F1196FD620063BFB0</string>
+											<string>B8C421221196FD620063BFB0</string>
+											<string>B8C4212C1196FE1A0063BFB0</string>
+											<string>B8C4212D1196FE1A0063BFB0</string>
+											<string>B8C421301196FE1A0063BFB0</string>
+											<string>B8C421601197004E0063BFB0</string>
+											<string>B8C421721197027E0063BFB0</string>
+											<string>B8C42180119704DB0063BFB0</string>
+											<string>B8C42181119704DB0063BFB0</string>
+											<string>B8C42182119704DB0063BFB0</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -592,9 +592,12 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>B8C421371196FE1A0063BFB0</string>
+		<string>B8C421381196FE1A0063BFB0</string>
+		<string>B8F6B247118998B900DF2580</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>B8C420FF1196F88D0063BFB0</string>
-		<string>B8F6B247118998B900DF2580</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>/Users/socket/University/vmss-lab/lab11/lab11.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -690,7 +693,7 @@
 			<key>WindowToolGUID</key>
 			<string>B8F6B247118998B900DF2580</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
@@ -814,7 +817,7 @@
 			<key>WindowToolGUID</key>
 			<string>1CD10A99069EF8BA00B06720</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
@@ -938,7 +941,7 @@
 								<key>Frame</key>
 								<string>{{0, 0}, {975, 349}}</string>
 								<key>RubberWindowFrame</key>
-								<string>585 249 975 390 0 0 1680 1028 </string>
+								<string>386 199 975 390 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXDebugCLIModule</string>
@@ -961,13 +964,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1C78EAAD065D492600B07095</string>
-				<string>B8EDCDEB118EFDA40026C071</string>
+				<string>B8C421361196FE1A0063BFB0</string>
 				<string>1C78EAAC065D492600B07095</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.consoleV3</string>
 			<key>WindowString</key>
-			<string>585 249 975 390 0 0 1680 1028 </string>
+			<string>386 199 975 390 0 0 1440 878 </string>
 			<key>WindowToolGUID</key>
 			<string>1C78EAAD065D492600B07095</string>
 			<key>WindowToolIsVisible</key>

@@ -54,7 +54,6 @@ public:
 	
 	bool generate(ParseNode *node, yaul_op **code);
 	
-	
 private:
 	void throwError(const char* err, ...);
 
@@ -65,10 +64,10 @@ private:
 	
 	yaul_op* addOp(yaul_opcode opcode, void *arg = NULL);
 	yaul_op* addOp(yaul_opcode opcode, int arg);
+	int calcJumpPos(yaul_op* op);
 	
 	CodeBlock* getCodeBlock();
 	
-	int calcJumpPos(yaul_op* op);
 };
 
 #endif

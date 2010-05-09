@@ -29,6 +29,8 @@ bool CodeGen::generate(ParseNode *node, yaul_op **code) {
 	_code.clear();
 	genChunk(node, NULL);
 
+	*code = &_code[0];
+	
 	return true;
 }
 
@@ -127,7 +129,7 @@ void CodeGen::genStatement(ParseNode *node, ParseNode *parent) {
 		
 			yaul_op *jne = addOp(OP_JNE);
 			genBlock( c_node->children[1], c_node );
-			addOp(OP_JMP, (void*)calcJumpPos(nop));
+			addOp(OP_JMP, -calcJumpPos(nop) );
 			jne->_operand = (void*)calcJumpPos(jne);
 			}
 			break;
@@ -196,4 +198,32 @@ void CodeGen::genExp(ParseNode *node, ParseNode *parent) {
 		}
 
 	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+// service functions
+
+yaul_op* CodeGen::addOp(yaul_opcode opcode, void *arg) {
+	_code.push_back(yaul_op());
+	yaul_op *op = &_code.back();
+	op->_opcode = opcode;
+	op->_operand = arg;
+	
+	return op;
+}
+
+yaul_op* CodeGen::addOp(yaul_opcode opcode, int arg) {
+	return addOp(opcode, (void*)arg);
+}
+
+int CodeGen::calcJumpPos(yaul_op* op) {
+	int pos = 0;
+	for (int i=_code.size(); i >= 0; --i ) {
+		if ( &_code[i] == op ) {
+			return pos;
+		}
+		pos++;
+	}
+	throwError("internal error");
+	return 0;
 }

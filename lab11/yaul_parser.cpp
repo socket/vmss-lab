@@ -79,6 +79,11 @@ void Parser::initOperatorTable() {
 	_opTable[TK_MUL] = OperatorPrecendence(2, false);
 	_opTable[TK_DIV] = OperatorPrecendence(2, false);
 	
+	_opTable[TK_EQUAL] = OperatorPrecendence(4, false);
+	_opTable[TK_NEQ] = OperatorPrecendence(4, false);
+	_opTable[TK_GREATER] = OperatorPrecendence(4, false);
+	_opTable[TK_LESS] = OperatorPrecendence(4, false);
+	
 }
 
 
@@ -89,6 +94,7 @@ ParseNode* Parser::createNode(ParseTokenType type)  {
 	ParseNode* node = new ParseNode();
 	assert( node );
 	node->type = type;
+	node->lextoken = 0;
 	
 	return node;
 }

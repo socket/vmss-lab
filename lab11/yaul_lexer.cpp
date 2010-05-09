@@ -204,9 +204,22 @@ LexToken* Lexer::getToken() {
 				case '+': token->type = TK_PLUS;  return token;
 				case '-': token->type = TK_MINUS; return token;
 				case '*': token->type = TK_MUL;   return token;
-				case '=': token->type = TK_ASSIGN;   return token;
+				case '=': 
+					token->type = TK_ASSIGN;   
+					if ( *(_buff+1) == '=' ) {
+						token->type == TK_EQUAL;
+						_buff++;
+					}
+					return token;
 				
-				case '!': token->type = TK_NOT;  return token;
+				case '!': 
+					token->type = TK_NOT;  
+					if ( *(_buff+1) == '=' ) {
+						token->type == TK_NEQ;
+						_buff++;
+					}
+					return token;
+					
 				case '>': token->type = TK_LESS;  return token;
 				case '<': token->type = TK_GREATER; return token;
 					
