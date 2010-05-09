@@ -21,6 +21,8 @@ static const char* opcodes_str[] = {
 	"OP_SUB",
 	"OP_MUL",
 	"OP_DIV",
+	"OP_MOD",
+	"OP_BIN_INV",
 	"OP_BIN_AND",
 	"OP_BIN_OR",
 	"OP_NOT",

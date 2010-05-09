@@ -78,6 +78,7 @@ void Parser::initOperatorTable() {
 	_opTable[TK_MINUS] = OperatorPrecendence(3, false);
 	_opTable[TK_MUL] = OperatorPrecendence(2, false);
 	_opTable[TK_DIV] = OperatorPrecendence(2, false);
+	_opTable[TK_MOD] = OperatorPrecendence(2, false);
 	
 	_opTable[TK_EQUAL] = OperatorPrecendence(4, false);
 	_opTable[TK_NEQ] = OperatorPrecendence(4, false);
@@ -88,6 +89,7 @@ void Parser::initOperatorTable() {
 	_opTable[TK_BIN_OR] = OperatorPrecendence(5, false);
 	_opTable[TK_NOT] = OperatorPrecendence(5, true);
 	_opTable[TK_BIN_XOR] = OperatorPrecendence(5, false);
+	_opTable[TK_BIN_INV] = OperatorPrecendence(5, true);
 	
 	_opTable[TK_AND] = OperatorPrecendence(6, false);
 	_opTable[TK_OR] = OperatorPrecendence(6, false);	
@@ -268,8 +270,6 @@ ParseNode* Parser::parseExp() {
 	
 	ParseNode *node = createNode(PT_EXP);
 	std::stack<LexToken*> op_stack;
-	
-	LexToken *tk_s = _curtk;
 	
 	while (_curtk && !done) {
 		bool ident = false;

@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>B8C93E791197710100A27D6A</string>
+						<string>B8C93E921197725800A27D6A</string>
 						<key>history</key>
 						<array>
 							<string>B8C42297119729360063BFB0</string>
@@ -315,7 +315,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>10</integer>
+									<integer>8</integer>
 									<integer>4</integer>
 									<integer>3</integer>
 									<integer>0</integer>
@@ -359,7 +359,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>yaul_vm.c</string>
+								<string>yaul_parser.cpp</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -367,11 +367,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>yaul_vm.c</string>
+										<string>yaul_parser.cpp</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>B8C93E781197710100A27D6A</string>
+										<string>B8C93E911197725800A27D6A</string>
 										<key>history</key>
 										<array>
 											<string>B8204D93118C67D70033C797</string>
@@ -385,17 +385,17 @@
 											<string>B8C421EB11970E670063BFB0</string>
 											<string>B8C421EC11970E670063BFB0</string>
 											<string>B8C422471197137D0063BFB0</string>
-											<string>B8C93E191197657D00A27D6A</string>
 											<string>B8C93E5B11976DB300A27D6A</string>
 											<string>B8C93E6B119770F200A27D6A</string>
-											<string>B8C93E6C119770F200A27D6A</string>
-											<string>B8C93E6D119770F200A27D6A</string>
-											<string>B8C93E6E119770F200A27D6A</string>
-											<string>B8C93E6F119770F200A27D6A</string>
-											<string>B8C93E70119770F200A27D6A</string>
-											<string>B8C93E71119770F200A27D6A</string>
-											<string>B8C93E72119770F200A27D6A</string>
-											<string>B8C93E73119770F200A27D6A</string>
+											<string>B8C93E881197725800A27D6A</string>
+											<string>B8C93E891197725800A27D6A</string>
+											<string>B8C93E8A1197725800A27D6A</string>
+											<string>B8C93E8B1197725800A27D6A</string>
+											<string>B8C93E8C1197725800A27D6A</string>
+											<string>B8C93E8D1197725800A27D6A</string>
+											<string>B8C93E8E1197725800A27D6A</string>
+											<string>B8C93E8F1197725800A27D6A</string>
+											<string>B8C93E901197725800A27D6A</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -595,11 +595,11 @@
 	<array>
 		<string>B8C93DA0119737A700A27D6A</string>
 		<string>B8C93DA1119737A700A27D6A</string>
+		<string>B8F6B247118998B900DF2580</string>
 		<string>B8C420FF1196F88D0063BFB0</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>1C78EAAD065D492600B07095</string>
-		<string>B8F6B247118998B900DF2580</string>
 		<string>/Users/socket/University/vmss-lab/lab11/lab11.xcodeproj</string>
+		<string>1C78EAAD065D492600B07095</string>
 	</array>
 	<key>WindowString</key>
 	<string>0 59 1440 819 0 0 1440 878 </string>
@@ -625,7 +625,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>yaul_lexer.cpp</string>
+								<string>yaul_parser.cpp</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -694,7 +694,7 @@
 			<key>WindowToolGUID</key>
 			<string>B8F6B247118998B900DF2580</string>
 			<key>WindowToolIsVisible</key>
-			<true/>
+			<false/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>
