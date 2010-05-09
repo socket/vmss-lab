@@ -10,6 +10,16 @@
 #include "yaul_parser.h"
 #include "yaul_codegen.h"
 
+#include "yaul_opcodes_str.h"
+
+CodeGen::CodeGen() {
+	
+}
+
+CodeGen::~CodeGen() {
+	
+}
+
 
 void CodeGen::throwError(const char* err, ...) {
 	char buff[256];
@@ -29,7 +39,7 @@ bool CodeGen::generate(ParseNode *node, yaul_op **code) {
 	_code.clear();
 	genChunk(node, NULL);
 
-	*code = &_code[0];
+	//*code = &_code[0];
 	
 	return true;
 }
@@ -44,30 +54,33 @@ CodeBlock* CodeGen::getCodeBlock() {
 
 void CodeGen::genChunk(ParseNode *node, ParseNode *parent) {
 	for( int i=0; i < node->children.size(); ++i ) {
-		switch (node->type) {
+		ParseNode *cnode = node->children[i];
+		switch (cnode->type) {
 				
 		case PT_BLOCK:
-			genBlock(node, parent);
-			return;
+			genBlock(cnode, node);
+			break;
 			
 		default:
 			throwError("Unknown node in chunk");
 			break;
 		}
 	}
+	addOp(OP_RETN);
 }
 
 void CodeGen::genBlock(ParseNode *node, ParseNode *parent) {
 	_blocks.push( CodeBlock() );
 	for( int i=0; i < node->children.size(); ++i ) {
-		switch (node->type) {
+		ParseNode *cnode = node->children[i];
+		switch (cnode->type) {
 			case PT_STATEMENT:
-				genStatement(node, parent);
-				return;
+				genStatement(cnode, node);
+				break;
 			
 			case PT_LASTSTATEMENT:
 				addOp(OP_RETN);
-				return;
+				break;
 				
 			default:
 				throwError("Unknown statement in block");
@@ -84,10 +97,10 @@ void CodeGen::genStatement(ParseNode *node, ParseNode *parent) {
 	ParseNode *c_node = node->children[0];
 	switch (c_node->type) {
 		case PT_VAR_ASSIGN:
-			addOp(OP_PUSH_STRING, c_node->lextoken->data);
+			addOp(OP_PUSH_STRING, (long)c_node->lextoken->data);
 			genExp(c_node, node);
 			if ( getCodeBlock()->hasLocal(c_node->lextoken->data) ) {
-				addOp(OP_SETLOCAL);
+				//addOp(OP_SETLOCAL); // not impl
 			}
 			else {
 				addOp(OP_SETGLOBAL);
@@ -109,14 +122,14 @@ void CodeGen::genStatement(ParseNode *node, ParseNode *parent) {
 				yaul_op *jne = addOp(OP_JNE);
 				genBlock(c_node->children[1], c_node);
 				yaul_op *jmp = addOp(OP_JMP);
-				jne->_operand = (void*)calcJumpPos(jne);
+				jne->_operand = calcJumpPos(jne);
 				genBlock(c_node->children[2], c_node);
-				jmp->_operand = (void*)calcJumpPos(jmp);
+				jmp->_operand = calcJumpPos(jmp);
 			}
 			else {
 				yaul_op *jne = addOp(OP_JNE);
 				genBlock(c_node->children[1], c_node);
-				jne->_operand = (void*)calcJumpPos(jne);				
+				jne->_operand = calcJumpPos(jne);				
 			}
 
 			break;
@@ -130,7 +143,7 @@ void CodeGen::genStatement(ParseNode *node, ParseNode *parent) {
 			yaul_op *jne = addOp(OP_JNE);
 			genBlock( c_node->children[1], c_node );
 			addOp(OP_JMP, -calcJumpPos(nop) );
-			jne->_operand = (void*)calcJumpPos(jne);
+			jne->_operand = calcJumpPos(jne);
 			}
 			break;
 		
@@ -142,6 +155,10 @@ void CodeGen::genStatement(ParseNode *node, ParseNode *parent) {
 				
 				throwError("redeclaration of local var '%s'", c_node->lextoken->data);
 			}
+			break;
+			
+		case PT_FUNCTIONCALL:
+			genFuncCall( c_node, node );
 			break;
 			
 		default:
@@ -177,21 +194,28 @@ void CodeGen::genExp(ParseNode *node, ParseNode *parent) {
 		}
 		else if ( cnode->type == PT_CONST ) {
 			if ( cnode->lextoken->type == TK_INT ) {
-				addOp(OP_PUSH_INT, (void*)cnode->lextoken->intval);
+				addOp(OP_PUSH_INT, cnode->lextoken->intval);
 			}
 			else if ( cnode->lextoken->type == TK_FLOAT ) {
-				addOp(OP_PUSH_DOUBLE, (void*)*((int*)(&cnode->lextoken->dblval)));
+				addOp(OP_PUSH_DOUBLE, (long)*((long*)(&cnode->lextoken->dblval)));
 			}
 			getCodeBlock()->_push_count++;
 		}
 		else if ( cnode->type == PT_VAR ) {
-			addOp(OP_PUSH_STRING, cnode->lextoken->data);
+			addOp(OP_PUSH_STRING, (long)cnode->lextoken->data);
 			if ( getCodeBlock()->hasLocal(cnode->lextoken->data) ) {
-				addOp(OP_GETLOCAL);
+				assert(0);//not implemented
+				//addOp(OP_GETLOCAL);
 			}
 			else {
 				addOp(OP_GETGLOBAL);
 			}
+		}
+		else if ( cnode->type == PT_EXP ) {
+			genExp(cnode, node);
+		}
+		else if ( cnode->type == PT_FUNCTIONCALL ) {
+			genFuncCall(cnode, node);
 		}
 		else {
 			throwError("Unsupported node in expression");
@@ -200,30 +224,65 @@ void CodeGen::genExp(ParseNode *node, ParseNode *parent) {
 	}
 }
 
+void CodeGen::genFuncCall(ParseNode *node, ParseNode *parent) {
+	ParseNode* expList = node->children[0];
+	if ( expList->type == PT_EXPLIST ) {
+		for( int i=0; i < node->children.size(); ++i ) {
+			ParseNode *cnode = node->children[i];
+			genExp(cnode, node);
+		}
+		addOp(OP_PUSH_STRING, (long)node->lextoken->data);
+		addOp(OP_GETGLOBAL);
+		addOp(OP_CALLFUNC);
+	}
+	else {
+		throwError("invalid node in explist");
+	}
+
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // service functions
 
-yaul_op* CodeGen::addOp(yaul_opcode opcode, void *arg) {
-	_code.push_back(yaul_op());
-	yaul_op *op = &_code.back();
+yaul_op* CodeGen::addOp(yaul_opcode opcode, long arg) {
+	yaul_op *op = new yaul_op();
 	op->_opcode = opcode;
 	op->_operand = arg;
+	_code.push_back(op);
 	
 	return op;
 }
 
-yaul_op* CodeGen::addOp(yaul_opcode opcode, int arg) {
-	return addOp(opcode, (void*)arg);
-}
 
 int CodeGen::calcJumpPos(yaul_op* op) {
 	int pos = 0;
-	for (int i=_code.size(); i >= 0; --i ) {
-		if ( &_code[i] == op ) {
+	for (int i=_code.size()-1; i >= 0; --i ) {
+		if ( _code[i] == op ) {
 			return pos;
 		}
 		pos++;
 	}
 	throwError("internal error");
 	return 0;
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+// debug
+
+void CodeGen::print(FILE *f) {
+	for (int i=0; i < _code.size(); ++i ) {
+		yaul_op &op = *_code[i];
+		fprintf(f, "%04d: %s, ", i, opcodes_str[op._opcode] );
+
+		if ( op._opcode == OP_PUSH_DOUBLE ) {
+			fprintf(f, "%f",  *((double*)(&op._operand)) );
+		} 
+		else if ( op._opcode == OP_PUSH_STRING ) {
+			fprintf(f, "'%s'", (const char*)op._operand);
+		}
+		else {
+			fprintf(f, "%d", (signed int)op._operand);
+		}
+		fprintf(f, "\n");
+	}	
 }

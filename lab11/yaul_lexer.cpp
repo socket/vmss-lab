@@ -206,16 +206,16 @@ LexToken* Lexer::getToken() {
 				case '*': token->type = TK_MUL;   return token;
 				case '=': 
 					token->type = TK_ASSIGN;   
-					if ( *(_buff+1) == '=' ) {
-						token->type == TK_EQUAL;
+					if ( *_buff == '=' ) {
+						token->type = TK_EQUAL;
 						_buff++;
 					}
 					return token;
 				
 				case '!': 
 					token->type = TK_NOT;  
-					if ( *(_buff+1) == '=' ) {
-						token->type == TK_NEQ;
+					if ( *_buff == '=' ) {
+						token->type = TK_NEQ;
 						_buff++;
 					}
 					return token;

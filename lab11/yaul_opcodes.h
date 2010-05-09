@@ -9,6 +9,8 @@
 #ifndef _yaul_opcodes_h
 #define _yaul_opcodes_h
 typedef enum { 
+	OP_NOT_USED,
+	
 	OP_PUSH_INT,
 	OP_PUSH_DOUBLE,
 	OP_PUSH_STRING,
@@ -36,14 +38,10 @@ typedef enum {
 	
 	OP_JMP,
 	
-	OP_JEQ,
 	OP_JNE,
 	
 	OP_CALLFUNC,
-	OP_CALLNATIVE,
 	
-	OP_GETLOCAL,
-	OP_SETLOCAL,
 	OP_GETGLOBAL,
 	OP_SETGLOBAL,
 	
@@ -54,7 +52,7 @@ typedef enum {
 
 typedef struct  {
 	yaul_opcode	_opcode;
-	void			 *_operand;
+	long				_operand;
 } yaul_op_t;
 
 typedef yaul_op_t yaul_op;

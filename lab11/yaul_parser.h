@@ -151,7 +151,7 @@ public:
 	void init(LexToken *tokens);
 	void reset();
 	
-	bool parse();
+	bool parse(ParseNode **topNode);
 	
 	void saveDebugTree(FILE* file);
 };

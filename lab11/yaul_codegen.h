@@ -45,7 +45,7 @@ public:
 
 class CodeGen {
 	
-	std::vector<yaul_op>		_code;
+	std::vector<yaul_op*>		_code;
 	std::stack<CodeBlock>		_blocks;
 	
 public:
@@ -53,6 +53,8 @@ public:
 	~CodeGen();
 	
 	bool generate(ParseNode *node, yaul_op **code);
+	void print(FILE *f);
+	
 	
 private:
 	void throwError(const char* err, ...);
@@ -61,9 +63,10 @@ private:
 	void genBlock(ParseNode *node, ParseNode *parent);
 	void genStatement(ParseNode *node, ParseNode *parent);
 	void genExp(ParseNode *node, ParseNode *parent);
+	void genFuncCall(ParseNode *node, ParseNode *parent);
 	
-	yaul_op* addOp(yaul_opcode opcode, void *arg = NULL);
-	yaul_op* addOp(yaul_opcode opcode, int arg);
+	yaul_op* addOp(yaul_opcode opcode, long arg = NULL);
+	
 	int calcJumpPos(yaul_op* op);
 	
 	CodeBlock* getCodeBlock();

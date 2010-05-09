@@ -162,7 +162,7 @@ void Parser::nextToken() {
 	assert( _curtk );
 }
 
-bool Parser::parse() {
+bool Parser::parse(ParseNode **topNode) {
 	bool result = true;
 	try {
 		parseChunk();
@@ -171,6 +171,8 @@ bool Parser::parse() {
 		result = false;
 		printf( "%s\n", e.error() );
 	}
+	*topNode = _topNode;
+	
 	return result;
 }
 
@@ -205,12 +207,16 @@ ParseNode* Parser::parseLastStatement() {
 
 ParseNode* Parser::parseVarAssignment() {
 	if ( acceptToken(TK_IDENT) ) {
-		ParseNode *node = createNode(PT_VAR_ASSIGN);
-		node->lextoken = _curtk-1;
-		expectToken(TK_ASSIGN);
-		expectNode(PT_EXP, parseExp(), node);
-		
-		return node;
+		if ( acceptToken(TK_ASSIGN) ) {
+			ParseNode *node = createNode(PT_VAR_ASSIGN);
+			node->lextoken = _curtk-2;
+			expectNode(PT_EXP, parseExp(), node);
+			
+			return node;
+		}
+		else {
+			_curtk--;
+		}
 	}
 	return NULL;
 }
@@ -239,7 +245,12 @@ ParseNode* Parser::parseFunctionCall() {
 ParseNode* Parser::parseExpList() {
 	ParseNode *node = createNode(PT_EXPLIST);
 	while ( acceptNode(PT_EXP, parseExp(), node) ) {
-		expectToken(TK_COMMA);		// ToDo!
+		if ( _curtk->type != TK_RPAR ) { 
+			expectToken(TK_COMMA);		// ToDo!
+		}
+		else {
+			break;
+		}
 	}
 	return node;
 }
@@ -254,6 +265,7 @@ ParseNode* Parser::parseExp() {
 	LexToken *tk_s = _curtk;
 	
 	while (_curtk && !done) {
+		bool ident = false;
 		switch (_curtk->type) {
 			case TK_IDENT:
 				if ( (_curtk+1)->type == TK_LPAR ) { // function call 
@@ -261,12 +273,13 @@ ParseNode* Parser::parseExp() {
 				} 
 				else {	// variable
 					expectNode(PT_VAR, parseVar(), node );
-					_curtk--; // we will call nextToken later, so compensate this
 				}
+				_curtk--; // we will call nextToken later, so compensate this
+				ident = true;
 				
 			case TK_INT:
 			case TK_FLOAT:
-				if ( _curtk->type != TK_IDENT ) {
+				if ( ! ident ) {
 					ParseNode *n = createNode(PT_CONST);
 					n->lextoken = _curtk;
 					addNode(n, node);
@@ -295,6 +308,10 @@ ParseNode* Parser::parseExp() {
 				
 			case TK_RPAR:
 				unary = false;
+				if ( op_stack.size() == 0 ) {
+					return node;
+				}
+				
 				while ( op_stack.size() > 0 ) {
 					LexToken *stack_top = op_stack.top();
 					if ( stack_top->type != TK_LPAR ) {

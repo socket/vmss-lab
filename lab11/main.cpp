@@ -12,6 +12,7 @@
 #include "vmss_common.h"
 #include "yaul_lexer.h"
 #include "yaul_parser.h"
+#include "yaul_codegen.h"
 
 int main (int argc, char * const argv[]) {
 	Lexer lex;
@@ -33,9 +34,15 @@ int main (int argc, char * const argv[]) {
 			fread(buff, 1, size, file);
 			lex.analyze(buff, &tokens, &count);
 			parser.init(tokens);
-			if ( parser.parse() ) {
+			ParseNode *node;
+			if ( parser.parse( &node ) ) {
 				printf("*** Parse OK\n");
 				parser.saveDebugTree(stdout);
+			
+				CodeGen gen;
+				yaul_op* code;
+				gen.generate(node, &code);
+				gen.print(stdout);
 			}
 			
 		}

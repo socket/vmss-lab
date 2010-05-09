@@ -41,6 +41,7 @@
 		B8C42030119608CB0063BFB0 /* yaul_opcodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaul_opcodes.h; sourceTree = "<group>"; };
 		B8C4204F1196211B0063BFB0 /* yaul_codegen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaul_codegen.h; sourceTree = "<group>"; };
 		B8C420501196211B0063BFB0 /* yaul_codegen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = yaul_codegen.cpp; sourceTree = "<group>"; };
+		B8C421B2119709D50063BFB0 /* yaul_opcodes_str.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = yaul_opcodes_str.h; sourceTree = "<group>"; };
 		B8F6B216118996B400DF2580 /* vmss_convert.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vmss_convert.c; sourceTree = "<group>"; };
 		B8F6B217118996B400DF2580 /* vmss_convert.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vmss_convert.h; sourceTree = "<group>"; };
 		B8F6B218118996B400DF2580 /* vmss_string.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vmss_string.c; sourceTree = "<group>"; };
@@ -113,6 +114,7 @@
 				B8C4202B119608300063BFB0 /* yaul_vm.h */,
 				B8C4202C119608300063BFB0 /* yaul_vm.c */,
 				B8C42030119608CB0063BFB0 /* yaul_opcodes.h */,
+				B8C421B2119709D50063BFB0 /* yaul_opcodes_str.h */,
 				B8C4204F1196211B0063BFB0 /* yaul_codegen.h */,
 				B8C420501196211B0063BFB0 /* yaul_codegen.cpp */,
 			);
