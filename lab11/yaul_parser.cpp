@@ -83,7 +83,14 @@ void Parser::initOperatorTable() {
 	_opTable[TK_NEQ] = OperatorPrecendence(4, false);
 	_opTable[TK_GREATER] = OperatorPrecendence(4, false);
 	_opTable[TK_LESS] = OperatorPrecendence(4, false);
+
+	_opTable[TK_BIN_AND] = OperatorPrecendence(5, false);
+	_opTable[TK_BIN_OR] = OperatorPrecendence(5, false);
+	_opTable[TK_NOT] = OperatorPrecendence(5, true);
+	_opTable[TK_BIN_XOR] = OperatorPrecendence(5, false);
 	
+	_opTable[TK_AND] = OperatorPrecendence(6, false);
+	_opTable[TK_OR] = OperatorPrecendence(6, false);	
 }
 
 

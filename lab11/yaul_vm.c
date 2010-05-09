@@ -142,10 +142,104 @@ int yaulvm_exec_op(yaul_state *Y, yaul_op *o) {
 			break;
 			
 		default:
-			break;
+			if ( yaulvm_exec_exp_op(Y, o) == -1 ) {
+				yaul_push_string(Y, "unknown opcode");	
+			}
 	}
 	return 0;
 }
+
+int	yaulvm_exec_exp_op(yaul_state *Y, yaul_op *o) {
+	int res = 0;
+	int unary = 0;
+	
+	int v1, v2;
+	yaul_var *t1, *t2;
+	yaul_get(Y, &t1, -1);
+	yaul_get(Y, &t2, 0);
+	
+	assert(t1);
+	assert(t2);
+	
+	v1 = t1->_value;
+	v2 = t2->_value;
+	
+	switch (o->_opcode) {
+		case OP_ADD:
+			res = v1 + v2;
+			break;
+			
+		case OP_SUB:
+			res = v1 - v2;
+			break;
+
+		case OP_MUL:
+			res = v1 * v2;
+			break;
+
+		case OP_DIV:
+			res = v1 / v2;
+			break;
+
+		case OP_BIN_AND:
+			res = v1 & v2;
+			break;
+						
+		case OP_BIN_OR:
+			res = v1 | v2;
+			break;
+			
+		case OP_NOT:
+			res = !v2;
+			unary = 1;
+			break;
+			
+		case OP_XOR:
+			res = v1 ^ v2;
+			break;
+			
+		case OP_EQ:
+			res = (v1 == v2);
+			break;
+			
+		case OP_AND:
+			res = (v1 && v2);
+			break;
+			
+		case OP_OR:
+			res = (v1 || v2);
+			break;
+			
+		case OP_NEQ:
+			res = (v1 != v2);
+			break;
+			
+		case OP_LEQ:
+			res = (v1 <= v2);
+			break;
+			
+		case OP_GEQ:
+			res = (v1 >= v2);
+			break;
+			
+		case OP_GREATER:
+			res = (v1 > v2);
+			break;
+			
+		case OP_LESSER:
+			res = (v1 < v2);
+			break;
+	
+		default:
+			return -1;
+	}
+	
+	yaul_pop(Y, (! unary )? 2 : 1);
+	yaul_push_int(Y, res);
+	
+	return 0;
+}
+
 
 void yaul_push_int(yaul_state *Y, int value) {
 	Y->_data_stack[Y->_dpos]._type = YVM_INTEGER;

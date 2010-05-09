@@ -58,9 +58,11 @@ const char* Lexer::token_strings[] = {
 	"TK_NEQ",
 	"TK_NOT",
 	
+	"TK_BIN_AND",
+	"TK_BIN_OR",
 	"TK_AND",
 	"TK_OR",
-	"TK_XOR",
+	"TK_BIN_XOR",
 	
 	"TK_EOF",
 	"TK_UNKNOWN",
@@ -222,6 +224,8 @@ LexToken* Lexer::getToken() {
 					
 				case '>': token->type = TK_LESS;  return token;
 				case '<': token->type = TK_GREATER; return token;
+				case '&': token->type = TK_BIN_AND;  return token;
+				case '|': token->type = TK_BIN_OR; return token;
 					
 				case '/': 
 				{
@@ -319,7 +323,7 @@ TLexToken Lexer::getReservedWord(const char *word) {
 		{"break", TK_BREAK},
 		{"and", TK_AND},
 		{"or", TK_OR},
-		{"xor", TK_XOR},
+		{"xor", TK_BIN_XOR},
 		
 	};
 	

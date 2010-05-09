@@ -33,6 +33,9 @@ static const char* opcodes_str[] = {
 	"OP_GREATER",
 	"OP_LESSER",
 	
+	"OP_AND",
+	"OP_OR",
+
 	"OP_CMP",
 	
 	"OP_JMP",

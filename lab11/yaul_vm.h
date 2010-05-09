@@ -75,6 +75,7 @@ void				yaul_getglobal(yaul_state *Y);
 
 void				yaul_setcfunc(yaul_state *Y, const char *name, int (*func)(yaul_state*));
 
-int				yaulvm_exec_op(yaul_state *Y, yaul_op *o);
+int					yaulvm_exec_op(yaul_state *Y, yaul_op *o);
+int					yaulvm_exec_exp_op(yaul_state *Y, yaul_op *o);
 
 #endif
