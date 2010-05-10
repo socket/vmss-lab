@@ -197,48 +197,7 @@
 	<key>Notifications</key>
 	<array/>
 	<key>OpenEditors</key>
-	<array>
-		<dict>
-			<key>Content</key>
-			<dict>
-				<key>PBXProjectModuleGUID</key>
-				<string>B8C420FF1196F88D0063BFB0</string>
-				<key>PBXProjectModuleLabel</key>
-				<string>test.yauc</string>
-				<key>PBXSplitModuleInNavigatorKey</key>
-				<dict>
-					<key>Split0</key>
-					<dict>
-						<key>PBXProjectModuleGUID</key>
-						<string>B8C421001196F88D0063BFB0</string>
-						<key>PBXProjectModuleLabel</key>
-						<string>test.yauc</string>
-						<key>_historyCapacity</key>
-						<integer>0</integer>
-						<key>bookmark</key>
-						<string>B8C93E921197725800A27D6A</string>
-						<key>history</key>
-						<array>
-							<string>B8C42297119729360063BFB0</string>
-						</array>
-					</dict>
-					<key>SplitCount</key>
-					<string>1</string>
-				</dict>
-				<key>StatusBarVisibility</key>
-				<true/>
-			</dict>
-			<key>Geometry</key>
-			<dict>
-				<key>Frame</key>
-				<string>{{0, 20}, {1211, 777}}</string>
-				<key>PBXModuleWindowStatusBarHidden2</key>
-				<false/>
-				<key>RubberWindowFrame</key>
-				<string>31 60 1211 818 0 0 1440 878 </string>
-			</dict>
-		</dict>
-	</array>
+	<array/>
 	<key>PerspectiveWidths</key>
 	<array>
 		<integer>-1</integer>
@@ -371,7 +330,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>B8C93E911197725800A27D6A</string>
+										<string>B8C93FF91197860700A27D6A</string>
 										<key>history</key>
 										<array>
 											<string>B8204D93118C67D70033C797</string>
@@ -381,21 +340,23 @@
 											<string>B8204F3E118D8C9F0033C797</string>
 											<string>B8EDCDB9118EE6B30026C071</string>
 											<string>B8C421301196FE1A0063BFB0</string>
-											<string>B8C421EA11970E670063BFB0</string>
 											<string>B8C421EB11970E670063BFB0</string>
 											<string>B8C421EC11970E670063BFB0</string>
-											<string>B8C422471197137D0063BFB0</string>
-											<string>B8C93E5B11976DB300A27D6A</string>
-											<string>B8C93E6B119770F200A27D6A</string>
-											<string>B8C93E881197725800A27D6A</string>
-											<string>B8C93E891197725800A27D6A</string>
-											<string>B8C93E8A1197725800A27D6A</string>
-											<string>B8C93E8B1197725800A27D6A</string>
-											<string>B8C93E8C1197725800A27D6A</string>
-											<string>B8C93E8D1197725800A27D6A</string>
-											<string>B8C93E8E1197725800A27D6A</string>
-											<string>B8C93E8F1197725800A27D6A</string>
-											<string>B8C93E901197725800A27D6A</string>
+											<string>B8C93EB81197780800A27D6A</string>
+											<string>B8C93F5B1197804000A27D6A</string>
+											<string>B8C93F5C1197804000A27D6A</string>
+											<string>B8C93F601197804000A27D6A</string>
+											<string>B8C93F631197804000A27D6A</string>
+											<string>B8C93FEF1197860700A27D6A</string>
+											<string>B8C93FF01197860700A27D6A</string>
+											<string>B8C93FF11197860700A27D6A</string>
+											<string>B8C93FF21197860700A27D6A</string>
+											<string>B8C93FF31197860700A27D6A</string>
+											<string>B8C93FF41197860700A27D6A</string>
+											<string>B8C93FF51197860700A27D6A</string>
+											<string>B8C93FF61197860700A27D6A</string>
+											<string>B8C93FF71197860700A27D6A</string>
+											<string>B8C93FF81197860700A27D6A</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -596,10 +557,9 @@
 		<string>B8C93DA0119737A700A27D6A</string>
 		<string>B8C93DA1119737A700A27D6A</string>
 		<string>B8F6B247118998B900DF2580</string>
-		<string>B8C420FF1196F88D0063BFB0</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>/Users/socket/University/vmss-lab/lab11/lab11.xcodeproj</string>
 		<string>1C78EAAD065D492600B07095</string>
+		<string>/Users/socket/University/vmss-lab/lab11/lab11.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>0 59 1440 819 0 0 1440 878 </string>
@@ -625,7 +585,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>yaul_parser.cpp</string>
+								<string>yaul_vm.c</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -694,7 +654,7 @@
 			<key>WindowToolGUID</key>
 			<string>B8F6B247118998B900DF2580</string>
 			<key>WindowToolIsVisible</key>
-			<false/>
+			<true/>
 		</dict>
 		<dict>
 			<key>FirstTimeWindowDisplayed</key>

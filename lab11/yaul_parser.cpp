@@ -286,6 +286,7 @@ ParseNode* Parser::parseExp() {
 				
 			case TK_INT:
 			case TK_FLOAT:
+			case TK_LITERAL:
 				if ( ! ident ) {
 					ParseNode *n = createNode(PT_CONST);
 					n->lextoken = _curtk;
@@ -324,7 +325,7 @@ ParseNode* Parser::parseExp() {
 					if ( stack_top->type != TK_LPAR ) {
 						if ( 1 == op_stack.size() ) {
 							//throwError("mismatched parenthesis");
-							nextToken();
+							//nextToken();
 							return node;
 							
 						}

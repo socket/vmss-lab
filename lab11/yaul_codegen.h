@@ -52,7 +52,7 @@ public:
 	CodeGen();
 	~CodeGen();
 	
-	bool generate(ParseNode *node, yaul_op **code);
+	bool generate(ParseNode *node, yaul_op **code, int *count = 0);
 	void print(FILE *f);
 	
 	

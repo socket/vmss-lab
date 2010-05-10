@@ -14,6 +14,9 @@
 #define YAUL_CALL_DEPTH 256
 #define YAUL_DATA_STACK_SIZE  4096
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef enum {
 	YVM_INTEGER,
@@ -45,6 +48,8 @@ typedef struct {
 	
 	yaul_var		  *_globals;
 	int						_gsz;
+	int						_gpos;
+	
 	yaul_op				*_chunk;
 	int						_csz;
 	int						_cpos;
@@ -78,4 +83,8 @@ void				yaul_setcfunc(yaul_state *Y, const char *name, int (*func)(yaul_state*))
 int					yaulvm_exec_op(yaul_state *Y, yaul_op *o);
 int					yaulvm_exec_exp_op(yaul_state *Y, yaul_op *o);
 
+#ifdef __cplusplus
+}
+#endif
+		
 #endif

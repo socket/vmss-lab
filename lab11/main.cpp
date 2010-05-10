@@ -14,6 +14,8 @@
 #include "yaul_parser.h"
 #include "yaul_codegen.h"
 
+#include "yaul_vm.h"
+
 int main (int argc, char * const argv[]) {
 	Lexer lex;
 	Parser parser;
@@ -41,8 +43,15 @@ int main (int argc, char * const argv[]) {
 			
 				CodeGen gen;
 				yaul_op* code;
-				gen.generate(node, &code);
+				int size = 0;
+				gen.generate(node, &code, &size);
 				gen.print(stdout);
+				
+				yaul_state *Y;
+				yaul_open(&Y);
+				printf("**************\n");
+				yaul_dochunk(Y, code, size);
+				
 			}
 			
 		}

@@ -226,8 +226,8 @@ LexToken* Lexer::getToken() {
 					}
 					return token;
 					
-				case '>': token->type = TK_LESS;  return token;
-				case '<': token->type = TK_GREATER; return token;
+				case '>': token->type = TK_GREATER;  return token;
+				case '<': token->type = TK_LESS; return token;
 				case '&': token->type = TK_BIN_AND;  return token;
 				case '|': token->type = TK_BIN_OR; return token;
 				case '~': token->type = TK_BIN_INV; return token;
@@ -255,6 +255,15 @@ LexToken* Lexer::getToken() {
 
 				case '(': token->type = TK_LPAR;  return token;
 				case ')': token->type = TK_RPAR;  return token;
+					
+				case '"': 
+					token->type = TK_LITERAL;
+					token_data--;
+					while (*_buff != '"' ) {
+						*token_data++ = *_buff++;
+					}
+					_buff++;
+					return token;
 			
 			  default:
 				{

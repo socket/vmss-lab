@@ -35,12 +35,18 @@ void CodeGen::throwError(const char* err, ...) {
 	throw CodeGenException(buff2);
 }
 
-bool CodeGen::generate(ParseNode *node, yaul_op **code) {
+bool CodeGen::generate(ParseNode *node, yaul_op **code, int *count) {
 	_code.clear();
 	genChunk(node, NULL);
 
-	//*code = &_code[0];
-	
+	*code = (yaul_op*)malloc( sizeof(yaul_op) * (_code.size() + 1) );
+	memset(*code, 0, sizeof(yaul_op) * (_code.size() + 1) );
+	for ( int i=0; i<_code.size(); ++i ) {
+		*(*code + i) = *_code[i];
+	}
+	if ( count ) {
+		*count = _code.size();
+	}
 	return true;
 }
 
@@ -142,7 +148,7 @@ void CodeGen::genStatement(ParseNode *node, ParseNode *parent) {
 		
 			yaul_op *jne = addOp(OP_JNE);
 			genBlock( c_node->children[1], c_node );
-			addOp(OP_JMP, -calcJumpPos(nop) );
+			addOp(OP_JMP, -calcJumpPos(nop)-1 );
 			jne->_operand = calcJumpPos(jne);
 			}
 			break;
@@ -206,6 +212,9 @@ void CodeGen::genExp(ParseNode *node, ParseNode *parent) {
 			}
 			else if ( cnode->lextoken->type == TK_FLOAT ) {
 				addOp(OP_PUSH_DOUBLE, (long)*((long*)(&cnode->lextoken->dblval)));
+			}
+			else if ( cnode->lextoken->type == TK_LITERAL ) {
+				addOp(OP_PUSH_STRING, (long)cnode->lextoken->data);
 			}
 			getCodeBlock()->_push_count++;
 		}

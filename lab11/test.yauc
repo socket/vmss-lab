@@ -1,14 +1,14 @@
 // Test file for YAUC compiler
 //
 
-rank = -5;
-
 src_value = 5;
+
+cur_value = src_value;
 rank = 5;
 
 if ( rank > 0 ) then
 	while ( rank > 0 ) do
-		src_value = src_value * src_value;
+		cur_value = cur_value * src_value;
 		rank = rank - 1;
 	end;
 else
@@ -23,6 +23,5 @@ else
 	end;
 end;
 
-src_value = src_value + sin(5);
-
-print(src_value);
+print("test");
+print(5 + cur_value);

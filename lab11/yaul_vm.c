@@ -14,6 +14,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "yaul_libio.h"
+
 void yaul_open(yaul_state **Y) {
 	assert( Y ) ;
 	*Y = (yaul_state*)malloc(sizeof(yaul_state));
@@ -27,6 +29,9 @@ void yaul_open(yaul_state **Y) {
 	
 	ys->_globals = (yaul_var*)calloc(32, sizeof(yaul_var));
 	ys->_gsz = 32;
+	ys->_gpos = 0;
+	
+	yaul_libio_open(ys);
 }
 
 void yaul_close(yaul_state *Y) {
@@ -51,12 +56,13 @@ void yaul_dochunk(yaul_state *Y, yaul_op *code, int chunk_size) {
 		if ( res < 0 ) {
 			yaul_var *err;
 			yaul_get(Y, &err, 0);
-			printf("yaulVM: %s", (const char*)err->_value);
+			printf("yaulVM error: %s", (const char*)err->_value);
 			return;
 		}
 		else if ( res == 1 ) {
 			break; // retn
 		}
+		Y->_cpos++;
 	}
 }
 
@@ -100,7 +106,7 @@ int yaulvm_exec_op(yaul_state *Y, yaul_op *o) {
 			}
 
 		case OP_JMP: // uncond jump
-			if ( Y->_cpos + o->_opcode <= Y->_csz ) {
+			if ( Y->_cpos + o->_operand <= Y->_csz ) {
 				Y->_cpos += o->_operand;
 			}
 			else {
@@ -123,7 +129,8 @@ int yaulvm_exec_op(yaul_state *Y, yaul_op *o) {
 				yaul_var *ft = 0;
 				yaul_get(Y, &ft, 0);
 				if ( ft->_type == YVM_CFUNCTION ) {
-					((int (*)(yaul_state*))(ft->_value))(Y); // some black magic
+					yaul_pop(Y, 1);
+					((int (*)(yaul_state*))(ft->_value))(Y); // black magic
 				}
 				else {
 					yaul_push_string(Y, "cannot call not a C-func");
@@ -160,6 +167,8 @@ int	yaulvm_exec_exp_op(yaul_state *Y, yaul_op *o) {
 	
 	assert(t1);
 	assert(t2);
+	assert(t1->_type == YVM_INTEGER);
+	assert(t2->_type == YVM_INTEGER);
 	
 	v1 = t1->_value;
 	v2 = t2->_value;
@@ -230,6 +239,14 @@ int	yaulvm_exec_exp_op(yaul_state *Y, yaul_op *o) {
 			res = (v1 < v2);
 			break;
 	
+		case OP_MOD:
+			res = v1 % v2;
+			break;
+			
+		case OP_BIN_INV:
+			res = ~v2;
+			break;
+			
 		default:
 			return -1;
 	}
@@ -264,8 +281,8 @@ void yaul_get(yaul_state *Y, yaul_var **var, int pos) {
 	if ( pos > 0 ) {
 		pos = -pos;
 	}
-	if ( Y->_dsz - 1 + pos > 0 ) {
-		*var = & Y->_data_stack[Y->_dsz - 1 + pos];
+	if ( Y->_dpos - 1 + pos >= 0 ) {
+		*var = & Y->_data_stack[Y->_dpos - 1 + pos];
 	}
 	else {
 		*var = 0;
@@ -291,7 +308,7 @@ void yaul_setglobal(yaul_state *Y) {
 	assert(t->_type == YVM_STRING);
 	
 	int i;
-	for( i=0; i < Y->_gsz; ++i ) {
+	for( i=0; i < Y->_gpos; ++i ) {
 		if ( !strcmp( Y->_globals[i]._name, (const char*)t->_value) ) {
 			Y->_globals[i]._value = val->_value;
 			yaul_pop(Y, 2);
@@ -299,11 +316,16 @@ void yaul_setglobal(yaul_state *Y) {
 		}
 	}
 	
-	Y->_globals[Y->_gsz]._name = (const char*)t->_value;
-	Y->_globals[Y->_gsz]._type = val->_value;
-	Y->_globals[Y->_gsz]._value = val->_value;
+	if ( Y->_gpos >= Y->_gsz ) {
+		Y->_gsz *= 2;
+		Y->_globals = (yaul_var*)realloc(Y->_globals, Y->_gsz);
+	}
 	
-	Y->_gsz++;
+	Y->_globals[Y->_gpos]._name = (const char*)t->_value;
+	Y->_globals[Y->_gpos]._type = val->_type;
+	Y->_globals[Y->_gpos]._value = val->_value;
+	
+	Y->_gpos++;
 	yaul_pop(Y, 2);	
 }
 
@@ -314,7 +336,7 @@ void yaul_getglobal(yaul_state *Y) {
 	assert(t->_type == YVM_STRING);
 	
 	int i;
-	for( i=0; i < Y->_gsz; ++i ) {
+	for( i=0; i < Y->_gpos; ++i ) {
 		if ( !strcmp( Y->_globals[i]._name, (const char*)t->_value) ) {
 			yaul_pop(Y, 1);
 			yaul_push(Y, &Y->_globals[i]);
