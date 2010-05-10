@@ -274,9 +274,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>8</integer>
-									<integer>4</integer>
-									<integer>3</integer>
+									<integer>2</integer>
+									<integer>1</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -318,7 +317,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>yaul_parser.cpp</string>
+								<string>test.yauc</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -326,11 +325,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>yaul_parser.cpp</string>
+										<string>test.yauc</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>B8C93FF91197860700A27D6A</string>
+										<string>B8C9406E11981E9D00A27D6A</string>
 										<key>history</key>
 										<array>
 											<string>B8204D93118C67D70033C797</string>
@@ -339,24 +338,24 @@
 											<string>B8204F01118D3F670033C797</string>
 											<string>B8204F3E118D8C9F0033C797</string>
 											<string>B8EDCDB9118EE6B30026C071</string>
-											<string>B8C421301196FE1A0063BFB0</string>
-											<string>B8C421EB11970E670063BFB0</string>
 											<string>B8C421EC11970E670063BFB0</string>
 											<string>B8C93EB81197780800A27D6A</string>
 											<string>B8C93F5B1197804000A27D6A</string>
 											<string>B8C93F5C1197804000A27D6A</string>
 											<string>B8C93F601197804000A27D6A</string>
 											<string>B8C93F631197804000A27D6A</string>
-											<string>B8C93FEF1197860700A27D6A</string>
-											<string>B8C93FF01197860700A27D6A</string>
-											<string>B8C93FF11197860700A27D6A</string>
 											<string>B8C93FF21197860700A27D6A</string>
-											<string>B8C93FF31197860700A27D6A</string>
 											<string>B8C93FF41197860700A27D6A</string>
-											<string>B8C93FF51197860700A27D6A</string>
-											<string>B8C93FF61197860700A27D6A</string>
-											<string>B8C93FF71197860700A27D6A</string>
-											<string>B8C93FF81197860700A27D6A</string>
+											<string>B8C94011119814F000A27D6A</string>
+											<string>B8C9404511981CF000A27D6A</string>
+											<string>B8C9404611981CF000A27D6A</string>
+											<string>B8C9404711981CF000A27D6A</string>
+											<string>B8C9404811981CF000A27D6A</string>
+											<string>B8C9404A11981CF000A27D6A</string>
+											<string>B8C9404B11981CF000A27D6A</string>
+											<string>B8C9406911981E6000A27D6A</string>
+											<string>B8C9406A11981E6000A27D6A</string>
+											<string>B8C9406B11981E6000A27D6A</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>

@@ -1,27 +1,21 @@
-// Test file for YAUC compiler
-//
+// Lab2.2.yauc
+// Построение таблицы истинности для логической функции трех аргументов (x,y,z)
 
-src_value = 5;
+i = 0;
 
-cur_value = src_value;
-rank = 5;
+del = "+---+---+---+---+";
+print(del + "\n| X | Y | Z | F |\n" + del + "\n");
 
-if ( rank > 0 ) then
-	while ( rank > 0 ) do
-		cur_value = cur_value * src_value;
-		rank = rank - 1;
-	end;
-else
-	if ( rank != 0 ) then
-		while ( rank < 0 ) do
-			src_value = src_value * src_value;
-			rank = rank + 1;
-		end;
-		src_value = src_value / rank;
-	else
-		src_value = 1;
-	end;
+while (i<8) do
+	x = i % 2;
+	y = (i / 2) % 2;
+	z = (i / 4);
+
+	// Строкой ниже нужно указать логическую функцию:
+	func = (x | y) & z;
+	//
+	
+	print("| " + x + " | " + y + " | " + z + " | " + func + " |\n");	
+	i = i + 1;
 end;
-
-print("test");
-print(5 + cur_value);
+print(del);

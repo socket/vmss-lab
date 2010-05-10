@@ -167,14 +167,27 @@ int	yaulvm_exec_exp_op(yaul_state *Y, yaul_op *o) {
 	
 	assert(t1);
 	assert(t2);
-	assert(t1->_type == YVM_INTEGER);
-	assert(t2->_type == YVM_INTEGER);
+//	assert(t1->_type == YVM_INTEGER);
+//	assert(t2->_type == YVM_INTEGER);
 	
 	v1 = t1->_value;
 	v2 = t2->_value;
 	
 	switch (o->_opcode) {
 		case OP_ADD:
+			if ( t1->_type == YVM_STRING || t2->_type == YVM_STRING ) {
+				// string concat
+				int len = strlen(yaulvm_tostring(t1)) + strlen(yaulvm_tostring(t2)) + 1;
+				char* cnstr = (char*)malloc(len);
+				*cnstr = 0;
+				strcat(cnstr, yaulvm_tostring(t1));
+				strcat(cnstr, yaulvm_tostring(t2));
+				yaul_pop(Y, 2);
+				yaul_push_string(Y, cnstr);
+				
+				return 0;
+			}
+			
 			res = v1 + v2;
 			break;
 			
@@ -355,4 +368,20 @@ void yaul_setcfunc(yaul_state *Y, const char *name, int (*func)(yaul_state*)) {
 	yaul_push_string(Y, name);
 	yaul_push(Y, &cfv);
 	yaul_setglobal(Y);
+}
+
+const char* yaulvm_tostring(yaul_var *var) {
+	if ( var->_type == YVM_STRING ) {
+		return (const char*)var->_value;
+	}
+	static char buff[256];
+	if ( var->_type == YVM_INTEGER ) {
+		sprintf(buff, "%d", (int)var->_value);
+		return buff;
+	}
+	if ( var->_type == YVM_INTEGER ) {
+		sprintf(buff, "%f", *((double*)&var->_value));
+		return buff;
+	}	
+	return "(error)";
 }

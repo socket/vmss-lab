@@ -323,17 +323,17 @@ ParseNode* Parser::parseExp() {
 				while ( op_stack.size() > 0 ) {
 					LexToken *stack_top = op_stack.top();
 					if ( stack_top->type != TK_LPAR ) {
-						if ( 1 == op_stack.size() ) {
-							//throwError("mismatched parenthesis");
-							//nextToken();
-							return node;
-							
-						}
+						
 						ParseNode *n = createNode(PT_OPERATOR);
 						n->lextoken = stack_top;
 						n->v = stack_top->type;
 						addNode(n, node);
 						
+						if ( 1 == op_stack.size() ) {
+							//throwError("mismatched parenthesis");
+							//nextToken();
+							return node;
+						}
 						op_stack.pop();
 					}
 					else {

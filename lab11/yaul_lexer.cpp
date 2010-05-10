@@ -260,6 +260,11 @@ LexToken* Lexer::getToken() {
 					token->type = TK_LITERAL;
 					token_data--;
 					while (*_buff != '"' ) {
+						if ( *_buff == '\\' && *(_buff+1) == 'n' ) {
+							_buff+=2;
+							*token_data++ = '\n';
+							continue;
+						}
 						*token_data++ = *_buff++;
 					}
 					_buff++;
