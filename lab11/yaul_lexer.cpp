@@ -67,6 +67,9 @@ const char* Lexer::token_strings[] = {
 	"TK_BIN_XOR",
 	
 	"TK_MOD",
+	"TK_IMPL",
+	"TK_MODP",
+	"TK_SHF",
 	
 	"TK_EOF",
 	"TK_UNKNOWN",
@@ -344,7 +347,9 @@ TLexToken Lexer::getReservedWord(const char *word) {
 		{"and", TK_AND},
 		{"or", TK_OR},
 		{"xor", TK_BIN_XOR},
-		
+		{"impl", TK_IMPL},
+		{"modp", TK_MODP},
+		{"shf", TK_SHF}
 	};
 	
 	for ( int i=0; i < sizeof(words)/sizeof(_ResWord); i++ ) {

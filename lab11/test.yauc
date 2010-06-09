@@ -1,21 +1,30 @@
-// Lab2.2.yauc
+// Lab2.1.yauc
 // Построение таблицы истинности для логической функции трех аргументов (x,y,z)
-
-i = 0;
-
+/*
 del = "+---+---+---+---+";
 print(del + "\n| X | Y | Z | F |\n" + del + "\n");
 
 while (i<8) do
-	x = i % 2;
-	y = (i / 2) % 2;
+	x = i % 2; 
+	y = (i / 2) % 2; 
 	z = (i / 4);
 
 	// Строкой ниже нужно указать логическую функцию:
-	func = (x | y) & z;
+	//func = (x impl y) impl ( (x impl z) impl (x impl y and z));
+	
+	//func = ( (x or y and !z) modp ((y impl z) impl !x) ) impl ( x shf !z ); 
 	//
+	//func = ( (x shf (y and z)) impl !((x and y) modp !z) );
+	func = (x and y) or (x and z) or (y and z) or (!x and !y);
 	
 	print("| " + x + " | " + y + " | " + z + " | " + func + " |\n");	
 	i = i + 1;
 end;
 print(del);
+
+*/
+
+a = 5;
+b = 7;
+c = a + b * 3;
+print("result: " + c);

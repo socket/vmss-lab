@@ -49,5 +49,9 @@ static const char* opcodes_str[] = {
 	"OP_GETGLOBAL",
 	"OP_SETGLOBAL",
 	
+	"OP_IMPL",
+	"OP_MODP",
+	"OP_SHF",
+	
 	"OP_NOP"
 };

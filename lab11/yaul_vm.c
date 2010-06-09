@@ -224,6 +224,10 @@ int	yaulvm_exec_exp_op(yaul_state *Y, yaul_op *o) {
 			res = (v1 == v2);
 			break;
 			
+		case OP_IMPL:
+			res = !v1 || v2;
+			break;
+			
 		case OP_AND:
 			res = (v1 && v2);
 			break;
@@ -254,6 +258,14 @@ int	yaulvm_exec_exp_op(yaul_state *Y, yaul_op *o) {
 	
 		case OP_MOD:
 			res = v1 % v2;
+			break;
+			
+		case OP_MODP:
+			res = (v1 + v2) % 2;
+			break;
+			
+		case OP_SHF:
+			res = !v1 || !v2;
 			break;
 			
 		case OP_BIN_INV:

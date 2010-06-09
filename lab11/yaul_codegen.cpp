@@ -199,8 +199,9 @@ void CodeGen::genExp(ParseNode *node, ParseNode *parent) {
 				case TK_BIN_AND: addOp(OP_BIN_AND); break;
 				case TK_BIN_OR: addOp(OP_BIN_OR); break;
 				case TK_BIN_INV: addOp(OP_BIN_INV); break;
-					
-					
+				case TK_IMPL: addOp(OP_IMPL); break;
+				case TK_MODP: addOp(OP_MODP); break;
+				case TK_SHF: addOp(OP_SHF); break;
 				default:
 					throwError("Unknown operator '%s'", Lexer::getTokenTypeString( cnode->lextoken->type ));
 					break;

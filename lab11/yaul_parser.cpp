@@ -91,8 +91,13 @@ void Parser::initOperatorTable() {
 	_opTable[TK_BIN_XOR] = OperatorPrecendence(5, false);
 	_opTable[TK_BIN_INV] = OperatorPrecendence(5, true);
 	
+	_opTable[TK_IMPL] = OperatorPrecendence(8, false);
+	_opTable[TK_MODP] = OperatorPrecendence(8, false);
+	_opTable[TK_SHF] = OperatorPrecendence(8, false);
+	
+	
 	_opTable[TK_AND] = OperatorPrecendence(6, false);
-	_opTable[TK_OR] = OperatorPrecendence(6, false);	
+	_opTable[TK_OR] = OperatorPrecendence(7, false);	
 }
 
 
@@ -194,9 +199,9 @@ ParseNode* Parser::parseChunk() {
 	return _topNode;
 }
 
+//block ::= {statement ';'} [laststatement ';']
 ParseNode*  Parser::parseBlock() {
 	ParseNode *node = createNode(PT_BLOCK);
-	//block ::= {statement ';'} [laststatement ';']
 	while ( acceptNode( PT_STATEMENT, parseStatement(), node ) ) {
 		expectToken(TK_SEMICOLON);
 	}

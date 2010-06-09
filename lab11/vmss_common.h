@@ -28,4 +28,7 @@ typedef int BOOL;
 #define FAILED(x) ((-1) == x)
 #define SUCCESS(x) !FAILED(x)
 
+#define MAX(a,b) a > b ? a : b
+#define MIN(a,b) a < b ? a : b
+
 #endif

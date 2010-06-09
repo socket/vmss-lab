@@ -16,15 +16,59 @@
 
 #include "yaul_vm.h"
 
+#include "vmss_decbin.h"
+	
+int main2 (int argc, char * const argv[]) {
+	INTFIELD a, b, res;
+	
+	vmss_int2decbin(534, &a);
+	vmss_int2decbin(540, &b);
+	
+	vmss_decbinsum(&a, &b, &res);
+	
+	int result = vmss_decbin2int(&res);
+	printf("DEC: %d\n", result);
+	
+	return 0;
+}
+
+int vmss_decsum(yaul_state *Y) {
+	INTFIELD a, b, res;
+	
+	yaul_var *var1, *var2;
+	yaul_get(Y, &var1, -1);
+	yaul_get(Y, &var2, 0);
+	
+	int ca = var1->_value;
+	int cb = var2->_value;
+	
+	vmss_int2decbin(ca, &a);
+	vmss_int2decbin(cb, &b);
+	
+	vmss_decbinsum(&a, &b, &res);
+	
+	int result = vmss_decbin2int(&res);
+	//printf("%d + %d = %d", ca, cb, result);
+	
+	yaul_var v;
+	v._value = result;
+	v._type = YVM_INTEGER;
+	
+	yaul_pop(Y, 2);
+	
+	yaul_push(Y, &v);
+	
+	return 0;
+}
+
+
 int main (int argc, char * const argv[]) {
 	Lexer lex;
 	Parser parser;
 	LexToken *tokens;
 	int count;
 	
-	//lex.analyze("if (test > 5) then do_something end", &tokens, &count);
-	
-	FILE *file = fopen("/Users/socket/University/vmss-lab/lab11/test.yauc", "r");
+	FILE *file = fopen("../../test.yauc", "r");
 	if (file) {
 		char *buff;
 		fseek(file, 0, SEEK_END);
@@ -49,6 +93,7 @@ int main (int argc, char * const argv[]) {
 				
 				yaul_state *Y;
 				yaul_open(&Y);
+				yaul_setcfunc(Y, "vmss_decsum", vmss_decsum);
 				printf("**************\n");
 				yaul_dochunk(Y, code, size);
 				
@@ -65,3 +110,6 @@ int main (int argc, char * const argv[]) {
 	
 	return 0;
 }
+
+
+
